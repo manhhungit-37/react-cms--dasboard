@@ -1,50 +1,26 @@
 import React, { useState } from 'react';
 
 // ant core
-import { Layout, Menu } from 'antd';
+import { Layout } from 'antd';
 
-// ant icon
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
+// components
+import Navbar from 'components/Navbar';
+import Header from 'components/Header';
 
-
-const { Header, Content, Sider } = Layout;
+const { Content } = Layout;
 
 function App() {
   const [collapsed, setCollapsed] = useState(true)
 
-  function toggle() {
+  function handleToggle() {
     setCollapsed(prevState => !prevState)
   }
 
   return (
     <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<UserOutlined />}>
-            nav 1
-          </Menu.Item>
-          <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-            nav 2
-          </Menu.Item>
-          <Menu.Item key="3" icon={<UploadOutlined />}>
-            nav 3
-          </Menu.Item>
-        </Menu>
-      </Sider>
+      <Navbar collapsed={collapsed} />
       <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0 }}>
-          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-            className: 'trigger',
-            onClick: toggle,
-          })}
-        </Header>
+        <Header collapsed={collapsed} handleToggle={handleToggle} />
         <Content
           className="site-layout-background"
           style={{

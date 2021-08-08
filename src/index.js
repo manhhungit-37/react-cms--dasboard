@@ -15,15 +15,9 @@ import 'index.css';
 ReactDOM.render(
   <Router>
     <Switch>
-      <Route exact path="/">
-        <App />
-      </Route>
-      <Route exact path="/login">
-        <Login />
-      </Route>
-      <Route exact path="*">
-        <NotFound />
-      </Route>
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/" component={App} />
+      <Route exact path="*" component={NotFound} />
     </Switch>
   </Router> ,
   document.getElementById('root')

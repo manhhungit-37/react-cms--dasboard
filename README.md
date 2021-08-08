@@ -9,6 +9,7 @@ A simple project react apps built after finish course react front end.
 ## Tech
 
 - structure code react
+- react lazy loading module
 - axios (call api)
 - axios interceptor
 - authenticate route
