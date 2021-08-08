@@ -5,8 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import App from './App';
 
 // views
-import Login from 'views/Login/Login';
-import NotFound from 'views/NotFound/NotFound';
+import Login from 'views/login';
 
 // styles
 import 'antd/dist/antd.css';
@@ -16,8 +15,7 @@ ReactDOM.render(
   <Router>
     <Switch>
       <Route exact path="/login" component={Login} />
-      <Route exact path="/" component={App} />
-      <Route exact path="*" component={NotFound} />
+      <Route path="/" component={App} />
     </Switch>
   </Router> ,
   document.getElementById('root')
