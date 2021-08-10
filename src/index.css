@@ -1,3 +1,7 @@
+html {
+  font-size: 16px;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -10,6 +14,14 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.margin-r10 {
+  margin: 0 10px 0 0;
 }
 
 .trigger {
@@ -45,7 +57,70 @@ code {
 
 /* === start common ===*/
 .wrapper {
-  max-width: 768px;
+  max-width: 576px;
   margin: 0 auto;
   padding: 20px 20px 0 20px;
+}
+
+.lock-icon {
+  color: #fff;
+  border-radius: 50%;
+  background-color: #f50057;
+  margin: 8px;
+}
+
+.lock-icon svg {
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+}
+
+.log-title {
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.33;
+}
+
+.log-input {
+  padding: 18px 14px;
+  box-shadow: none !important;
+}
+
+.log-button {
+  text-transform: uppercase;
+  width: 100%;
+  color: #fff;
+  height: 36px;
+  border-radius: 4px;
+  background-color: #3f51b5;
+}
+
+.log-button:hover {
+  background-color: #303f9f;
+}
+
+.footer-log {
+  padding: 0 50px;
+}
+
+.float-right {
+  float: right;
+}
+
+.half-input-container .ant-form-item-control-input-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.half-input {
+  width: 47%;
+  margin: 0;
+}
+
+@media only screen and (max-width: 576px) {
+  .footer-log {
+    display: block;
+    padding: 0 50px;
+    width: 100%;
+  }
 }
