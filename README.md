@@ -13,7 +13,7 @@ A simple project react apps built after finish course react front end.
 - axios (call api)
 - axios interceptor
 - authenticate route
-- authorize user (Admin, Operator ...)
+- authorize user (Admin, Operator ...) (@casl/ability)
 - pagination
 - infinite scroll
 - env

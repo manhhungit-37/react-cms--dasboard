@@ -1,0 +1,3 @@
+export const ACTION_NAME = {
+  'CREATE_NEW_PHOTO': 'CREATE_NEW_PHOTO'
+}

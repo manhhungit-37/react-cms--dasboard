@@ -37,10 +37,12 @@ export const login = (data, history) => async dispatch => {
   }
 }
 
-export const setUser = (payload) => ({
-  type: SET_USER,
-  payload,
-})
+export const setUser = payload => dispatch => {
+  dispatch({
+    type: SET_USER,
+    payload,
+  })
+}
 
 export const logout = () => {
   window.localStorage.removeItem("token");
