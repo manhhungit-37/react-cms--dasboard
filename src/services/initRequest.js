@@ -18,32 +18,36 @@ export default function initRequest(store) {
     }
   }
 
-  instance.interceptors.request.use(config => {
-    if (config.showSpinner) {
-      requestCount += 1;
-      store.dispatch(showLoading());
+  instance.interceptors.request.use(
+    config => {
+      if (config.showSpinner) {
+        requestCount += 1;
+        store.dispatch(showLoading());
+      }
+      return config;
+    },
+    error => {
+      if (error.config.showSpinner) {
+        decreaseRequestCount();
+      }
+      return Promise.reject(error);
     }
-    return config;
-  },
-  error => {
-    if (error.config.showSpinner) {
-      decreaseRequestCount();
-    }
-    return Promise.reject(error);
-  })
+  )
 
-  instance.interceptors.response.use(res => {
-    if (res.config.showSpinner) {
-      decreaseRequestCount();
+  instance.interceptors.response.use(
+    res => {
+      if (res.config.showSpinner) {
+        decreaseRequestCount();
+      }
+      return res;
+    },
+    error => {
+      if (error && error.config.showSpinner) {
+        decreaseRequestCount();
+      }
+      return Promise.reject(error);
     }
-    return res;
-  },
-  error => {
-    if (error && error.config.showSpinner) {
-      decreaseRequestCount();
-    }
-    return Promise.reject(error);
-  })
+  )
 }
 
 

@@ -1,10 +1,18 @@
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+//antd
 import { Form, Input, Button, Checkbox, Row} from 'antd';
 import { LockFilled } from '@ant-design/icons';
 
+//action
+import { login } from 'actions/user.action';
+
 const Login = () => {
-  const onFinish = values => {
-    console.log('Received values of form: ', values);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const onFinish = account => {
+    dispatch(login(account, history));
   };
 
   return (

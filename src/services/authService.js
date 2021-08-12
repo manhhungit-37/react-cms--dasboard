@@ -2,7 +2,6 @@ import { instance } from './initRequest';
 
 class AuthService {
   async post(url, data, config) {
-    console.log(config);
     return instance.post(url, data, config);
   }
 
