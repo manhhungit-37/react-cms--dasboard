@@ -2,7 +2,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 //antd
-import { Form, Input, Button, Checkbox, Row} from 'antd';
+import { Form, Input, Button, Row} from 'antd';
 import { LockFilled } from '@ant-design/icons';
 
 //action
@@ -57,18 +57,13 @@ const Login = () => {
             className="log-input"
           />
         </Form.Item>
-        
-        <Form.Item name="remember" valuePropName="checked" className="text-center">
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-
         <Form.Item>
           <Button type="primary" htmlType="submit" className="login-form-button margin-r10 log-button">
             SIGN IN
           </Button>
         </Form.Item>
         <Form.Item>
-            <Link to="/forgot" className="footer-log">Forgot password?</Link>
+            <Link to="/forgot" className="footer-log"></Link>
             <Link to="/register" className="footer-log">Don't have an account? Sign Up</Link>
         </Form.Item>
         </Form>

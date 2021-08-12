@@ -1,6 +1,5 @@
-import React, { useState, useEffect, Suspense } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { Switch, Route} from 'react-router-dom';
 
 // ant core
 import { Layout } from 'antd';
@@ -12,7 +11,6 @@ import HeaderComponent from 'components/Header';
 // views
 const PhotoList = React.lazy(() => import('views/photoList'));
 const PhotoDetail = React.lazy(() => import('views/photoDetail'));
-const NotFound = React.lazy(() => import('views/notFound'));
 
 const { Content } = Layout;
 
@@ -30,7 +28,7 @@ function Dashboard() {
 
         <HeaderComponent collapsed={collapsed} handleToggle={handleToggle} />
       
-        {/* <Content
+        <Content
           className="site-layout-background"
           style={{
             margin: '24px 16px',
@@ -38,10 +36,11 @@ function Dashboard() {
             minHeight: 280,
           }}
         >
-
-          
-          
-        </Content> */}
+          <Switch>
+            <Route path="/dashboard/photo/list" component={PhotoList} />
+            <Route path="/dashboard/photo/:id" component={PhotoDetail} />
+          </Switch>
+        </Content>
 
       </Layout>
     </Layout>

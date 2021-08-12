@@ -24,7 +24,8 @@ export const login = (data, history) => async dispatch => {
     const res = await authServices.post("/api/user/login", data, {
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      showSpinner: true
     })
     const { token } = res.data;
     window.localStorage.setItem("token", token);

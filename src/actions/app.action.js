@@ -1,5 +1,5 @@
-const SHOW_LOADING = "APP/SHOW_LOADING";
-const HIDE_LOADING = "APP/HIDE_LOADING";
+export const SHOW_LOADING = "APP/SHOW_LOADING";
+export const HIDE_LOADING = "APP/HIDE_LOADING";
 
 export const showLoading = () => {
   return {

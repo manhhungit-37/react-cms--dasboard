@@ -2,9 +2,11 @@ import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 //reducer
+import appReducer from 'reducers/app.reducer';
 import userReducer from 'reducers/user.reducer';
 
 const rootReducer = combineReducers({
+  app: appReducer,
   user: userReducer
 })
 
