@@ -9,7 +9,6 @@ import { Dropdown, Layout, Menu, Avatar } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  DownOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 
@@ -36,7 +35,7 @@ function HeaderComponent({ collapsed, handleToggle, user, logout }) {
         <div className="capitalize">{user.role}</div>
       </Menu.Item>
       <Menu.Item key="1">
-        <Link to="">My Account</Link>
+        <Link to="/profile">My Account</Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="3" onClick={logout}>Logout</Menu.Item>

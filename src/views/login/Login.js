@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -6,45 +5,15 @@ import { connect } from 'react-redux';
 import { Form, Input, Button, Row} from 'antd';
 import { LockFilled } from '@ant-design/icons';
 
-//toastify
-import { ToastContainer, toast } from 'react-toastify';
-
 //action
-import { login, setMess } from 'actions/user.action';
-
-const mapStateTopProps = state => {
-  return {
-    message: state.user.message
-  }
-}
+import { login } from 'actions/user.action';
 
 const mapDispatchTopProps = {
-  login,
-  setMess
+  login
 }
 
-const Login = ({ message, login, setMess }) => {
+const Login = ({ login }) => {
   const history = useHistory();
-
-  useEffect(() => {
-    if (message) {
-      notify(message);
-      setMess(null);
-    }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [message])
-
-  //notify message error
-  const notify = (msg) => toast.error(msg, {
-    position: "bottom-left",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: false,
-    draggable: true,
-    progress: undefined,
-  });
 
   //login
   const onFinish = account => {
@@ -102,19 +71,8 @@ const Login = ({ message, login, setMess }) => {
             <Link to="/register" className="footer-log">Don't have an account? Sign Up</Link>
         </Form.Item>
         </Form>
-        <ToastContainer
-          position="bottom-left"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss={false}
-          draggable
-          pauseOnHover={false}
-        />
     </div>
   );
 };
 
-export default connect(mapStateTopProps, mapDispatchTopProps)(Login);
+export default connect(null, mapDispatchTopProps)(Login);
