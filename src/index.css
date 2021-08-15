@@ -109,6 +109,30 @@ code {
   line-height: 1.33;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
+.user-icon {
+  cursor: pointer;
+  margin-right: 2em;
+}
+
+.log-password .ant-input-password {
+  padding: 0;
+}
+
+.log-password .ant-input-password .ant-input-password-icon {
+  display: block;
+  padding: 22px 15px;
+}
+
+.log-password .ant-input-password input {
+  padding: 18px 14px;
+  box-shadow: none !important;
+  
+}
+
 .log-input {
   padding: 18px 14px;
   box-shadow: none !important;

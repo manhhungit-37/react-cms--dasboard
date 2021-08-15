@@ -1,14 +1,16 @@
 import React from 'react'
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 // ant core
-import { Button, Layout } from 'antd';
+import { Dropdown, Layout, Menu, Avatar } from 'antd';
 
 // ant icon
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
+  DownOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 
 //action
@@ -16,14 +18,30 @@ import { logout } from 'actions/user.action';
 
 const { Header } = Layout;
 
-function HeaderComponent({ collapsed, handleToggle }) {
-  const dispatch = useDispatch();
-  const history = useHistory();
-
-  function logoutFunc() {
-    dispatch(logout());
-    history.push("/login");
+const mapStateTopProps = state => {
+  return {
+    user: state.user.user
   }
+}
+
+const mapDispatchTopProps = {
+  logout
+}
+
+function HeaderComponent({ collapsed, handleToggle, user, logout }) {
+
+  const menu = user ? (
+    <Menu>
+      <Menu.Item key="0">
+        <div className="capitalize">{user.role}</div>
+      </Menu.Item>
+      <Menu.Item key="1">
+        <Link to="">My Account</Link>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="3" onClick={logout}>Logout</Menu.Item>
+    </Menu>
+  ) : <div></div>;
 
   return (
     <div className="header">
@@ -33,9 +51,13 @@ function HeaderComponent({ collapsed, handleToggle }) {
           onClick: handleToggle,
         })}
       </Header>
-      <Button onClick={logoutFunc}>Logout</Button>
+      <Dropdown overlay={menu} trigger={['click']}>
+        <div className="ant-dropdown-link user-icon">
+          <Avatar icon={<UserOutlined />} />
+        </div>
+      </Dropdown>
     </div>
   )
 }
 
-export default HeaderComponent
+export default connect(mapStateTopProps, mapDispatchTopProps)(HeaderComponent);

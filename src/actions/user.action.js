@@ -1,11 +1,11 @@
 import authServices from "services/authService"
 
 export const LOGIN_SUCCESS = "USER/LOGIN_SUCCESS";
-export const LOGIN_FAILURE = "USER/LOGIN_FAILURE";
 export const LOGOUT = "USER/LOGOUT";
 export const SET_USER = "USER/SET_USER";
+export const SET_MESS = "USER/SET_MESSAGE";
 
-export const register = (data, history) => async () => {
+export const register = (data, history) => async dispatch => {
   try {
     await authServices.post("/api/user/register", data, {
       headers: {
@@ -15,7 +15,8 @@ export const register = (data, history) => async () => {
     })
     history.push("/login");
   } catch (error) {
-    console.log(error.response);
+    const { msg } = error.response.data;
+    dispatch({ type: SET_MESS, payload: msg });
   }
 }
 
@@ -30,18 +31,25 @@ export const login = (data, history) => async dispatch => {
     const { token } = res.data;
     window.localStorage.setItem("token", token);
     dispatch({ type: LOGIN_SUCCESS })
-    history.push("/");
+    history.push("/dashboard/report");
   } catch (error) {
     const { msg } = error.response.data;
-    dispatch({ type: LOGIN_FAILURE, payload: { message: msg } });
+    dispatch({ type: SET_MESS, payload: msg });
   }
 }
 
-export const setUser = payload => dispatch => {
-  dispatch({
+export const setUser = payload => {
+  return {
     type: SET_USER,
     payload,
-  })
+  }
+}
+
+export const setMess = (payload) => {
+  return {
+    type: SET_MESS,
+    payload
+  }
 }
 
 export const logout = () => {

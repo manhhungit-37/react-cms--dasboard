@@ -7,7 +7,7 @@ function GuestGuard({ component: Component, isRestricted, ...rest }) {
     <Route 
       {...rest}
       render={props => 
-        isAuth && isRestricted ? <Redirect to="/dashboard" /> : <Component {...props} />
+        isAuth && isRestricted ? <Redirect to="/dashboard/report" /> : <Component {...props} />
       }
     />
   )

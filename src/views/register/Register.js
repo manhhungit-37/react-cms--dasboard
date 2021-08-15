@@ -1,21 +1,56 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
+
+//toastify
+import { ToastContainer, toast } from 'react-toastify';
 
 //icons
 import { LockFilled } from '@ant-design/icons'
 
 //antd
 import { Button, Input, Row, Form } from 'antd'
-import { register } from 'actions/user.action';
 
-function Register() {
+//action
+import { register, setMess } from 'actions/user.action';
+
+
+const mapStateToProps = state => {
+  return {
+    message: state.user.message
+  }
+}
+
+const mapDispatchTopProps = {
+  setMess,
+  register
+}
+
+function Register({ message, setMess, register }) {
   const history = useHistory();
-  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (message) {
+      notify(message);
+      setMess(null);
+    }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [message])
+
+  const notify = (msg) => toast.error(msg, {
+    position: "bottom-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+  });
 
   const onFinish = account => {
     account.role = "operator";
-    dispatch(register(account, history))
+    register(account, history);
   };
   return (
     <div className="wrapper">
@@ -102,8 +137,19 @@ function Register() {
             <Link to="/login" className="footer-log float-right">Don't have an account? Sign In</Link>
         </Form.Item>
       </Form>
+      <ToastContainer
+          position="bottom-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover={false}
+        />
     </div>
   )
 }
 
-export default Register
+export default connect(mapStateToProps, mapDispatchTopProps)(Register);

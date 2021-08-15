@@ -1,18 +1,54 @@
+import { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 //antd
 import { Form, Input, Button, Row} from 'antd';
 import { LockFilled } from '@ant-design/icons';
 
-//action
-import { login } from 'actions/user.action';
+//toastify
+import { ToastContainer, toast } from 'react-toastify';
 
-const Login = () => {
-  const dispatch = useDispatch();
+//action
+import { login, setMess } from 'actions/user.action';
+
+const mapStateTopProps = state => {
+  return {
+    message: state.user.message
+  }
+}
+
+const mapDispatchTopProps = {
+  login,
+  setMess
+}
+
+const Login = ({ message, login, setMess }) => {
   const history = useHistory();
+
+  useEffect(() => {
+    if (message) {
+      notify(message);
+      setMess(null);
+    }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [message])
+
+  //notify message error
+  const notify = (msg) => toast.error(msg, {
+    position: "bottom-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+  });
+
+  //login
   const onFinish = account => {
-    dispatch(login(account, history));
+    login(account, history);
   };
 
   return (
@@ -44,6 +80,7 @@ const Login = () => {
         </Form.Item>
         <Form.Item
           name="password"
+          className="log-password"
           rules={[
             {
               required: true,
@@ -51,10 +88,8 @@ const Login = () => {
             },
           ]}
         >
-          <Input
-            type="password"
+          <Input.Password
             placeholder="Password *"
-            className="log-input"
           />
         </Form.Item>
         <Form.Item>
@@ -67,8 +102,19 @@ const Login = () => {
             <Link to="/register" className="footer-log">Don't have an account? Sign Up</Link>
         </Form.Item>
         </Form>
+        <ToastContainer
+          position="bottom-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover={false}
+        />
     </div>
   );
 };
 
-export default Login;
+export default connect(mapStateTopProps, mapDispatchTopProps)(Login);

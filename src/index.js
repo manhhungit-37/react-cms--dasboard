@@ -11,6 +11,7 @@ import store from 'store/store';
 // styles
 import 'antd/dist/antd.css';
 import 'index.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 //services
 import initRequest from 'services/initRequest';

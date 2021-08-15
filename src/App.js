@@ -24,13 +24,14 @@ const NotFound = React.lazy(() => import('views/notFound'));
 const mapStateToProps = state => ({
   isLoading: state.app.isLoading,
   user: state.user.user,
+  isSuccess: state.user.isSuccess
 })
 
 const mapDispatchToProps = {
   setUser
 }
 
-function App({ isLoading, user, setUser }) {
+function App({ isLoading, user, isSuccess, setUser }) {
   const history = useHistory();
 
   useEffect(() => {
@@ -53,13 +54,13 @@ function App({ isLoading, user, setUser }) {
 
     fetchAuth();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [history])
+  }, [history, isSuccess])
 
   return (
     <>
       <Suspense fallback={<div>Loading</div>}>
         <Route exact path="/">
-          {user ? <Redirect to="/dashboard" /> : <Redirect to="/login" />}
+          {user ? <Redirect to="/dashboard/report" /> : <Redirect to="/login" />}
         </Route>
         <Switch>
           <AuthGuard path="/dashboard" component={Dashboard} />

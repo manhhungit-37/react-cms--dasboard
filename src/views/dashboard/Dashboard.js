@@ -11,6 +11,11 @@ import HeaderComponent from 'components/Header';
 // views
 const PhotoList = React.lazy(() => import('views/photoList'));
 const PhotoDetail = React.lazy(() => import('views/photoDetail'));
+const Report = React.lazy(() => import('views/report'));
+const Kanban = React.lazy(() => import('views/kanban'));
+const Member = React.lazy(() => import('views/member'));
+const User = React.lazy(() => import('views/user'));
+
 
 const { Content } = Layout;
 
@@ -37,8 +42,12 @@ function Dashboard() {
           }}
         >
           <Switch>
+            <Route path="/dashboard/report" component={Report} />
             <Route path="/dashboard/photo/list" component={PhotoList} />
             <Route path="/dashboard/photo/:id" component={PhotoDetail} />
+            <Route path="/dashboard/kanban" component={Kanban} />
+            <Route path="/dashboard/member" component={Member} />
+            <Route path="/dashboard/user" component={User} />
           </Switch>
         </Content>
 

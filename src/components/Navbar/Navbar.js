@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { Link } from "react-router-dom"
 
 // ant core
 import {  Layout, Menu } from 'antd';
@@ -19,20 +20,31 @@ function Navbar({ collapsed }) {
     <Sider trigger={null} collapsible collapsed={collapsed}>
       <div className="logo" />
       <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+        
         <Menu.Item key="1" icon={<DashboardOutlined />}>
-          Report
+          <Link to="/dashboard/report">
+            Report
+          </Link>
         </Menu.Item>
         <Menu.Item key="2" icon={<FileImageOutlined />}>
-          Photo
+          <Link to="/dashboard/photo/list">
+            Photo  
+          </Link>
         </Menu.Item>
         <Menu.Item key="3" icon={<FileDoneOutlined />}>
-          Kanban
+          <Link to="/dashboard/kanban">
+            Kanban  
+          </Link>
         </Menu.Item>
         <Menu.Item key="4" icon={<AliwangwangOutlined />}>
-          Members
+          <Link to="/dashboard/member">
+            Members  
+          </Link>
         </Menu.Item>
         <Menu.Item key="5" icon={<UserOutlined />}>
-          Users
+          <Link to="/dashboard/user">
+            Users  
+          </Link>
         </Menu.Item>
       </Menu>
     </Sider>
