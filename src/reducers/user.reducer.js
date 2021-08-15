@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGOUT, SET_USER, SET_MESS } from 'actions/user.action';
+import { LOGIN_SUCCESS, LOGOUT, SET_USER, SET_MESSAGE } from 'actions/user.action';
 
 const initState = {
   user: null,
@@ -30,7 +30,7 @@ const reducer = (state = initState, { type, payload }) => {
     //   }
     // }
 
-    case SET_MESS: {
+    case SET_MESSAGE: {
       return {
         ...state,
         message: payload

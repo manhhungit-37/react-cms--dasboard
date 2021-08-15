@@ -3,7 +3,7 @@ import authServices from "services/authService"
 export const LOGIN_SUCCESS = "USER/LOGIN_SUCCESS";
 export const LOGOUT = "USER/LOGOUT";
 export const SET_USER = "USER/SET_USER";
-export const SET_MESS = "USER/SET_MESSAGE";
+export const SET_MESSAGE = "USER/SET_MESSAGE";
 
 export const register = (data, history) => async dispatch => {
   try {
@@ -16,7 +16,7 @@ export const register = (data, history) => async dispatch => {
     history.push("/login");
   } catch (error) {
     const { msg } = error.response.data;
-    dispatch({ type: SET_MESS, payload: msg });
+    dispatch({ type: SET_MESSAGE, payload: msg });
   }
 }
 
@@ -34,7 +34,7 @@ export const login = (data, history) => async dispatch => {
     history.push("/dashboard/report");
   } catch (error) {
     const { msg } = error.response.data;
-    dispatch({ type: SET_MESS, payload: msg });
+    dispatch({ type: SET_MESSAGE, payload: msg });
   }
 }
 
@@ -47,7 +47,7 @@ export const setUser = payload => {
 
 export const setMess = (payload) => {
   return {
-    type: SET_MESS,
+    type: SET_MESSAGE,
     payload
   }
 }
