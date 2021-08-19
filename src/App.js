@@ -5,16 +5,15 @@ import { connect } from 'react-redux';
 // ant core
 import { Layout } from 'antd';
 
-//services
-import authServices from 'services/authService';
-
 //actions
 import { setUser } from 'actions/user.action';
 
 // components
-
 import Navbar from 'components/Navbar';
 import HeaderComponent from 'components/Header';
+
+// api
+import * as userApi from 'apis/user.api';
 
 // views
 const PhotoList = React.lazy(() => import('views/photoList'));
@@ -42,11 +41,7 @@ function App({ setUser }) {
   useEffect(() => {
     const fetchAuth = async () => {
       try {
-        const res = await authServices.post("/api/auth", {}, {
-          headers: {
-            'x-auth-token': token
-          }
-        })
+        const res = await userApi.getUserAuth();
         const { user } = res.data.user;
         setUser(user);
       } catch (error) {

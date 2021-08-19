@@ -10,10 +10,9 @@ import { Button, Input, Row, Form } from 'antd'
 
 //action
 import { setToast } from 'actions/app.action';
-import { register } from 'actions/user.action';
 
 //services
-import authServices from 'services/authService';
+import httpRequest from 'services/httpRequest';
 
 const mapDispatchToProps = {
   setToast
@@ -23,7 +22,7 @@ function Register({ setToast }) {
   const history = useHistory();
 
   const register = async (data, history) => {
-    const res = await authServices.post("/api/user/register", data, {
+    const res = await httpRequest.post("/api/user/register", data, {
       headers: {
         'Content-Type': 'application/json'
       },

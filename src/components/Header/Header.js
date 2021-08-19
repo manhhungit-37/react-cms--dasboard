@@ -51,9 +51,9 @@ function HeaderComponent({ collapsed, handleToggle, user, logout }) {
         })}
       </Header>
       <Dropdown overlay={menu} trigger={['click']}>
-        <a className="ant-dropdown-link user-icon">
+        <div className="ant-dropdown-link user-icon">
           <Avatar icon={<UserOutlined />} />
-        </a>
+        </div>
       </Dropdown>
     </div>
   )

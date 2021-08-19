@@ -9,7 +9,7 @@ import { LockFilled } from '@ant-design/icons';
 import { setToast } from 'actions/app.action';
 
 //service
-import authServices from 'services/authService';
+import httpRequest from 'services/httpRequest';
 import { setIsSuccess } from 'actions/user.action';
 
 const mapDispatchToProps = {
@@ -21,7 +21,7 @@ const Login = ({ setToast, setIsSuccess }) => {
   const history = useHistory();
 
   const login = async (data, history) =>  {
-    const res = await authServices.post("/api/user/login", data, {
+    const res = await httpRequest.post("/api/user/login", data, {
       headers: {
         'Content-Type': 'application/json'
       },

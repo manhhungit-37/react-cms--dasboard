@@ -16,7 +16,6 @@ import {
 const { Sider } = Layout;
 
 function Navbar({ collapsed }) {
-
   return (
     <Sider trigger={null} collapsible collapsed={collapsed}>
       <div className="logo" />

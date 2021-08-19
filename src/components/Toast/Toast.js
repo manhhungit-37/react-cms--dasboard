@@ -40,6 +40,10 @@ function Toast({ status, message }) {
         notifyError(message);
         break;
       }
+      case STATUS_CODE[404]: {
+        notifyError(message);
+        break;
+      }
       default:
         break
     }

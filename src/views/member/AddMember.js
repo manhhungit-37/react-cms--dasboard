@@ -9,6 +9,7 @@ const { Option } = Select;
 function AddMember() {
   const dateFormat = 'YYYY/MM/DD';
 
+
   function onFinish() {
 
   }
@@ -20,6 +21,10 @@ function AddMember() {
       <Form
         name="add_new_member"
         className="login-form"
+        initialValues={{
+          district: 'lucy',
+          dateJoin: moment('2020/10/20', dateFormat)
+        }}
         onFinish={onFinish}
       >
         <Form.Item className="half-input-container">
@@ -33,7 +38,7 @@ function AddMember() {
               },
             ]}
           >
-            <Input placeholder="First Name *" className="log-input" />
+            <Input placeholder="First Name *" />
           </Form.Item>
           <Form.Item
             name="lastName"
@@ -45,7 +50,7 @@ function AddMember() {
               },
             ]}
           >
-            <Input placeholder="Last Name *" className="log-input" />
+            <Input placeholder="Last Name *" />
           </Form.Item>
         </Form.Item>
         <Form.Item className="half-input-container">
@@ -66,7 +71,7 @@ function AddMember() {
             <Input
               type="email"
               placeholder="Email"
-              className="log-input"
+             
             />
           </Form.Item>
           <Form.Item
@@ -81,7 +86,7 @@ function AddMember() {
           >
             <Input
               placeholder="Position *"
-              className="log-input"
+             
             />
           </Form.Item>
         </Form.Item>
@@ -90,7 +95,6 @@ function AddMember() {
           className="half-input"
         >
           <DatePicker 
-            defaultValue={moment('01/01/2015', dateFormat)} 
             format={dateFormat} 
             className="log-input date-input"
           />
@@ -107,7 +111,7 @@ function AddMember() {
               },
             ]}
           >
-            <Input placeholder="Address *" className="log-input" />
+            <Input placeholder="Address *" />
           </Form.Item>
           <Form.Item
             name="district"
@@ -119,7 +123,7 @@ function AddMember() {
               },
             ]}
           >
-            <Select defaultValue="lucy" className="log-input" >
+            <Select >
               <Option value="jack">Jack</Option>
               <Option value="lucy">Lucy</Option>
             </Select>
@@ -134,7 +138,7 @@ function AddMember() {
               },
             ]}
           >
-            <Input placeholder="City" className="log-input" />
+            <Input placeholder="City" />
           </Form.Item>
         </Form.Item>
         <Form.Item>

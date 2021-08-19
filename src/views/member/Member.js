@@ -10,7 +10,7 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { canAction } from 'helpers/canAction';
 
 //service
-import authServices from 'services/authService';
+import httpRequest from 'services/httpRequest';
 
 //config 
 import { ACTION_NAME } from 'configs/roles';
@@ -83,7 +83,7 @@ function Member({ setToast }) {
   useEffect(() => {
     let isUnMount = false;
     const fetchMembers = async () => {
-      const res = await authServices.get('/api/member', {
+      const res = await httpRequest.get('/api/member', {
         headers: {
           'x-auth-token': window.localStorage.getItem('token')
         }
@@ -102,7 +102,7 @@ function Member({ setToast }) {
   }, [fetchMembersCount])
 
   async function handleDeleteMember(id) {
-    const res = await authServices.delete(`/api/member:${id}`, {});
+    const res = await httpRequest.delete(`/api/member:${id}`, {});
     setIsDeleteMemberModalVisible(false);
     setFetchMembersCount(prevState => prevState + 1);
     setToast({ status: res.status, message: res.data.msg})
