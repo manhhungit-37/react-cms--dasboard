@@ -5,6 +5,7 @@ import React from 'react';
 import { canAction } from 'helpers/canAction';
 
 function PhotoList() {
+
   return (
     <div>
       this is PhotoList

@@ -1,10 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Spin } from 'antd';
 
-export default function SpinComponent() {
+const mapStateToProps = state => ({
+  isLoading: state.app.isLoading,
+})
+
+const SpinComponent = ({ isLoading }) => {
   return (
-    <div className="spin">
-      <Spin />
-    </div>
+    <>
+      {isLoading ? (
+        <div className="spin">
+          {isLoading ?<Spin /> : null} 
+        </div>
+      ) : null}
+    </>
   )
 }
+
+export default connect(mapStateToProps, null)(SpinComponent);

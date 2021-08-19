@@ -9,7 +9,6 @@ import { Dropdown, Layout, Menu, Avatar } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  DownOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 
@@ -24,7 +23,7 @@ const mapStateTopProps = state => {
   }
 }
 
-const mapDispatchTopProps = {
+const mapDispatchToProps = {
   logout
 }
 
@@ -36,7 +35,7 @@ function HeaderComponent({ collapsed, handleToggle, user, logout }) {
         <div className="capitalize">{user.role}</div>
       </Menu.Item>
       <Menu.Item key="1">
-        <Link to="">My Account</Link>
+        <Link to="/profile">My Account</Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="3" onClick={logout}>Logout</Menu.Item>
@@ -52,12 +51,12 @@ function HeaderComponent({ collapsed, handleToggle, user, logout }) {
         })}
       </Header>
       <Dropdown overlay={menu} trigger={['click']}>
-        <div className="ant-dropdown-link user-icon">
+        <a className="ant-dropdown-link user-icon">
           <Avatar icon={<UserOutlined />} />
-        </div>
+        </a>
       </Dropdown>
     </div>
   )
 }
 
-export default connect(mapStateTopProps, mapDispatchTopProps)(HeaderComponent);
+export default connect(mapStateTopProps, mapDispatchToProps)(HeaderComponent);

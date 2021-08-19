@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 // ant core
 import {  Layout, Menu } from 'antd';
@@ -16,6 +16,7 @@ import {
 const { Sider } = Layout;
 
 function Navbar({ collapsed }) {
+
   return (
     <Sider trigger={null} collapsible collapsed={collapsed}>
       <div className="logo" />

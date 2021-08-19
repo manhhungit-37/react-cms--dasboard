@@ -1,9 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux';
-
-//toastify
-import { ToastContainer, toast } from 'react-toastify';
 
 //icons
 import { LockFilled } from '@ant-design/icons'
@@ -12,46 +9,35 @@ import { LockFilled } from '@ant-design/icons'
 import { Button, Input, Row, Form } from 'antd'
 
 //action
-import { register, setMess } from 'actions/user.action';
+import { setToast } from 'actions/app.action';
+import { register } from 'actions/user.action';
 
+//services
+import authServices from 'services/authService';
 
-const mapStateToProps = state => {
-  return {
-    message: state.user.message
-  }
+const mapDispatchToProps = {
+  setToast
 }
 
-const mapDispatchTopProps = {
-  setMess,
-  register
-}
-
-function Register({ message, setMess, register }) {
+function Register({ setToast }) {
   const history = useHistory();
 
-  useEffect(() => {
-    if (message) {
-      notify(message);
-      setMess(null);
-    }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [message])
-
-  const notify = (msg) => toast.error(msg, {
-    position: "bottom-left",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: false,
-    draggable: true,
-    progress: undefined,
-  });
+  const register = async (data, history) => {
+    const res = await authServices.post("/api/user/register", data, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      showSpinner: true
+    })
+    setToast({ status: res.status, message: res.data?.msg });
+    history.push("/login");
+  }
 
   const onFinish = account => {
-    account.role = "operator";
+    account.role = "guest";
     register(account, history);
   };
+
   return (
     <div className="wrapper">
       <Row type="flex" align="center">
@@ -137,19 +123,8 @@ function Register({ message, setMess, register }) {
             <Link to="/login" className="footer-log float-right">Don't have an account? Sign In</Link>
         </Form.Item>
       </Form>
-      <ToastContainer
-          position="bottom-left"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss={false}
-          draggable
-          pauseOnHover={false}
-        />
     </div>
   )
 }
 
-export default connect(mapStateToProps, mapDispatchTopProps)(Register);
+export default connect(null, mapDispatchToProps)(Register);

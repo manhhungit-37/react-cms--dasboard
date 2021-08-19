@@ -24,6 +24,10 @@ code {
   margin: 0 10px 0 0;
 }
 
+.primary-color {
+  color: #40a9ff;
+}
+
 .trigger {
   padding: 0 24px;
   font-size: 18px;
@@ -109,6 +113,11 @@ code {
   line-height: 1.33;
 }
 
+.component-heading {
+  font-size: 21px;
+  font-weight: 700;
+}
+
 .capitalize {
   text-transform: capitalize;
 }
@@ -136,6 +145,10 @@ code {
 .log-input {
   padding: 18px 14px;
   box-shadow: none !important;
+}
+
+.date-input {
+  width: 100%;
 }
 
 .log-button {
@@ -169,11 +182,30 @@ code {
   margin: 0;
 }
 
+.input-30 {
+  width: 30%;
+  margin: 0;
+}
+
+.select-in {
+  height: 100%;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #fff;
+}
+
+.antd-button {
+  border: none;
+  font-size: 20px;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
 }
 
 @media only screen and (max-width: 576px) {

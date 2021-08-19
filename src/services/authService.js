@@ -8,6 +8,10 @@ class AuthService {
   async get(url, config) {
     return instance.get(url, config);
   }
+
+  async delete(url, config) {
+    return instance.delete(url, config);
+  }
 }
 
 const authServices = new AuthService();

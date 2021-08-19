@@ -14,6 +14,7 @@ import { setUser } from 'actions/user.action';
 
 // components
 import Spin from 'components/Spin';
+import Toast from 'components/Toast';
 
 // views
 const Dashboard = React.lazy(() => import('views/dashboard'));
@@ -22,27 +23,27 @@ const Register = React.lazy(() => import('views/register'));
 const NotFound = React.lazy(() => import('views/notFound'));
 
 const mapStateToProps = state => ({
-  isLoading: state.app.isLoading,
   user: state.user.user,
-  isSuccess: state.user.isSuccess
+  isSuccess: state.user.isSuccess,
+
 })
 
 const mapDispatchToProps = {
-  setUser
+  setUser,
 }
 
-function App({ isLoading, user, isSuccess, setUser }) {
+function App({ user, isSuccess, setUser }) {
   const history = useHistory();
 
   useEffect(() => {
     const fetchAuth = async () => {
       try {
-        const resAuth = await authServices.post("/api/auth", {}, {
+        const res = await authServices.post("/api/auth", {}, {
           headers: {
             'x-auth-token': token
           }
         })
-        const { user } = resAuth.data.user;
+        const { user } = res.data.user;
         setUser(user);
       } catch (error) {
         window.localStorage.removeItem("token");
@@ -54,11 +55,11 @@ function App({ isLoading, user, isSuccess, setUser }) {
 
     fetchAuth();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [history, isSuccess])
+  }, [isSuccess])
 
   return (
     <>
-      <Suspense fallback={<div>Loading</div>}>
+      <Suspense fallback={<div/>}>
         <Route exact path="/">
           {user ? <Redirect to="/dashboard/report" /> : <Redirect to="/login" />}
         </Route>
@@ -69,9 +70,11 @@ function App({ isLoading, user, isSuccess, setUser }) {
           <AuthGuard path="*" component={NotFound} />
         </Switch>
       </Suspense>
-      {isLoading && <Spin /> }
+
+      <Spin />
+
+      <Toast />
     </>
-     
   );
 }
 

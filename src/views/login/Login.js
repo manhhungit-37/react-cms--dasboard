@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -6,50 +5,41 @@ import { connect } from 'react-redux';
 import { Form, Input, Button, Row} from 'antd';
 import { LockFilled } from '@ant-design/icons';
 
-//toastify
-import { ToastContainer, toast } from 'react-toastify';
-
 //action
-import { login, setMess } from 'actions/user.action';
+import { setToast } from 'actions/app.action';
 
-const mapStateTopProps = state => {
-  return {
-    message: state.user.message
-  }
+//service
+import authServices from 'services/authService';
+import { setIsSuccess } from 'actions/user.action';
+
+const mapDispatchToProps = {
+  setToast,
+  setIsSuccess
 }
 
-const mapDispatchTopProps = {
-  login,
-  setMess
-}
-
-const Login = ({ message, login, setMess }) => {
+const Login = ({ setToast, setIsSuccess }) => {
   const history = useHistory();
 
-  useEffect(() => {
-    if (message) {
-      notify(message);
-      setMess(null);
-    }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [message])
-
-  //notify message error
-  const notify = (msg) => toast.error(msg, {
-    position: "bottom-left",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: false,
-    draggable: true,
-    progress: undefined,
-  });
+  const login = async (data, history) =>  {
+    const res = await authServices.post("/api/user/login", data, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      showSpinner: true
+    })
+    const { token, msg } = res.data;
+    window.localStorage.setItem("token", token);
+    setIsSuccess(true);
+    setToast({ status: res.status, message: msg });
+    history.push("/dashboard/report");
+  }
 
   //login
   const onFinish = account => {
     login(account, history);
   };
+
+
 
   return (
     <div className="wrapper">
@@ -102,19 +92,8 @@ const Login = ({ message, login, setMess }) => {
             <Link to="/register" className="footer-log">Don't have an account? Sign Up</Link>
         </Form.Item>
         </Form>
-        <ToastContainer
-          position="bottom-left"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss={false}
-          draggable
-          pauseOnHover={false}
-        />
     </div>
   );
 };
 
-export default connect(mapStateTopProps, mapDispatchTopProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);

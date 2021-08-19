@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom'; 
+import './wdyr';
+
 import App from './App';
 
 //store
@@ -21,7 +23,7 @@ initRequest(store);
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-        <App />
+      <App />
     </Router> 
   </Provider>,
   document.getElementById('root')

@@ -15,7 +15,7 @@ const Report = React.lazy(() => import('views/report'));
 const Kanban = React.lazy(() => import('views/kanban'));
 const Member = React.lazy(() => import('views/member'));
 const User = React.lazy(() => import('views/user'));
-
+const AddMember = React.lazy(() => import('views/member/AddMember'));
 
 const { Content } = Layout;
 
@@ -46,6 +46,7 @@ function Dashboard() {
             <Route path="/dashboard/photo/list" component={PhotoList} />
             <Route path="/dashboard/photo/:id" component={PhotoDetail} />
             <Route path="/dashboard/kanban" component={Kanban} />
+            <Route path="/dashboard/member/add" component={AddMember} />
             <Route path="/dashboard/member" component={Member} />
             <Route path="/dashboard/user" component={User} />
           </Switch>
