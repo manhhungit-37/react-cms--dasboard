@@ -1,10 +1,9 @@
-import React, { useEffect, Suspense } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-//guard
-import AuthGuard from 'guards/AuthGuard';
-import GuestGuard from 'guards/GuestGuard';
+// ant core
+import { Layout } from 'antd';
 
 //services
 import authServices from 'services/authService';
@@ -13,27 +12,32 @@ import authServices from 'services/authService';
 import { setUser } from 'actions/user.action';
 
 // components
-import Spin from 'components/Spin';
-import Toast from 'components/Toast';
+
+import Navbar from 'components/Navbar';
+import HeaderComponent from 'components/Header';
 
 // views
-const Dashboard = React.lazy(() => import('views/dashboard'));
-const Login = React.lazy(() => import('views/login'));
-const Register = React.lazy(() => import('views/register'));
-const NotFound = React.lazy(() => import('views/notFound'));
-
-const mapStateToProps = state => ({
-  user: state.user.user,
-  isSuccess: state.user.isSuccess,
-
-})
+const PhotoList = React.lazy(() => import('views/photoList'));
+const PhotoDetail = React.lazy(() => import('views/photoDetail'));
+const Report = React.lazy(() => import('views/report'));
+const Kanban = React.lazy(() => import('views/kanban'));
+const Member = React.lazy(() => import('views/member'));
+const User = React.lazy(() => import('views/user'));
+const AddMember = React.lazy(() => import('views/member/AddMember'));
 
 const mapDispatchToProps = {
   setUser,
 }
 
-function App({ user, isSuccess, setUser }) {
+const { Content } = Layout;
+
+function App({ setUser }) {
   const history = useHistory();
+  const [collapsed, setCollapsed] = useState(true);
+
+  const handleToggle = () => {
+    setCollapsed(prevState => !prevState)
+  }
 
   useEffect(() => {
     const fetchAuth = async () => {
@@ -55,27 +59,36 @@ function App({ user, isSuccess, setUser }) {
 
     fetchAuth();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess])
+  }, [])
 
   return (
-    <>
-      <Suspense fallback={<div/>}>
-        <Route exact path="/">
-          {user ? <Redirect to="/dashboard/report" /> : <Redirect to="/login" />}
-        </Route>
-        <Switch>
-          <AuthGuard path="/dashboard" component={Dashboard} />
-          <GuestGuard exact isRestricted path="/login" component={Login} />
-          <GuestGuard exact isRestricted path="/register" component={Register} />
-          <AuthGuard path="*" component={NotFound} />
-        </Switch>
-      </Suspense>
+    <Layout>
+      <Navbar collapsed={collapsed} />
+      <Layout className="site-layout">
 
-      <Spin />
-
-      <Toast />
-    </>
+        <HeaderComponent collapsed={collapsed} handleToggle={handleToggle} />
+      
+        <Content
+          className="site-layout-background"
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: 280,
+          }}
+        >
+          <Switch>
+            <Route path="/photo/list" component={PhotoList} />
+            <Route path="/photo/:id" component={PhotoDetail} />
+            <Route path="/kanban" component={Kanban} />
+            <Route path="/member/add" component={AddMember} />
+            <Route path="/member" component={Member} />
+            <Route path="/user" component={User} />
+            <Route path="/" component={Report} />
+          </Switch>
+        </Content>
+      </Layout>
+    </Layout>
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

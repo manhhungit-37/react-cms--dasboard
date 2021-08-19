@@ -23,27 +23,27 @@ function Navbar({ collapsed }) {
       <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
         
         <Menu.Item key="1" icon={<DashboardOutlined />}>
-          <Link to="/dashboard/report">
+          <Link to="/report">
             Report
           </Link>
         </Menu.Item>
         <Menu.Item key="2" icon={<FileImageOutlined />}>
-          <Link to="/dashboard/photo/list">
+          <Link to="/photo/list">
             Photo  
           </Link>
         </Menu.Item>
         <Menu.Item key="3" icon={<FileDoneOutlined />}>
-          <Link to="/dashboard/kanban">
+          <Link to="/kanban">
             Kanban  
           </Link>
         </Menu.Item>
         <Menu.Item key="4" icon={<AliwangwangOutlined />}>
-          <Link to="/dashboard/member">
+          <Link to="/member">
             Members  
           </Link>
         </Menu.Item>
         <Menu.Item key="5" icon={<UserOutlined />}>
-          <Link to="/dashboard/user">
+          <Link to="/user">
             Users  
           </Link>
         </Menu.Item>

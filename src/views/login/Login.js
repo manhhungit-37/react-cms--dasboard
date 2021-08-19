@@ -25,21 +25,20 @@ const Login = ({ setToast, setIsSuccess }) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      showSpinner: true
+      showSpinner: true,
+      showToast: true
     })
     const { token, msg } = res.data;
     window.localStorage.setItem("token", token);
     setIsSuccess(true);
     setToast({ status: res.status, message: msg });
-    history.push("/dashboard/report");
+    history.push("/");
   }
 
   //login
   const onFinish = account => {
     login(account, history);
   };
-
-
 
   return (
     <div className="wrapper">

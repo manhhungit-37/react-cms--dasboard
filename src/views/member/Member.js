@@ -117,7 +117,7 @@ function Member({ setToast }) {
             type="primary" 
             className="right-button" 
           >
-            <Link to="/dashboard/member/add">
+            <Link to="/member/add">
               <PlusOutlined /> 
               Add
             </Link>

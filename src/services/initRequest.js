@@ -20,13 +20,15 @@ export default function initRequest(store) {
 
   instance.interceptors.request.use(
     config => {
-      store.dispatch(setToast({
-        status: 400,
-        message: ''   
-      }));
       if (config.showSpinner) {
         requestCount += 1;
         store.dispatch(showLoading());
+      }
+      if(config.showToast) {
+        store.dispatch(setToast({
+          status: 400,
+          message: ''   
+        }));
       }
       return config;
     },
