@@ -17,6 +17,6 @@ export const setIsSuccess = payload => {
 }
 
 export const logout = () => {
-  window.localStorage.removeItem("token");
+  window.localStorage.removeItem("accessToken");
   return { type: LOGOUT };
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 // ant core
 import { Dropdown, Layout, Menu, Avatar } from 'antd';
@@ -28,6 +28,7 @@ const mapDispatchToProps = {
 }
 
 function HeaderComponent({ collapsed, handleToggle, user, logout }) {
+  const history = useHistory();
 
   const menu = user ? (
     <Menu>
@@ -38,7 +39,10 @@ function HeaderComponent({ collapsed, handleToggle, user, logout }) {
         <Link to="/profile">My Account</Link>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="3" onClick={logout}>Logout</Menu.Item>
+      <Menu.Item key="3" onClick={() => {
+        logout();
+        history.push('/login')
+      }}>Logout</Menu.Item>
     </Menu>
   ) : <div></div>;
 

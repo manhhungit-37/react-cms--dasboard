@@ -29,7 +29,7 @@ const Login = ({ setToast, setIsSuccess }) => {
       showToast: true
     })
     const { token, msg } = res.data;
-    window.localStorage.setItem("token", token);
+    window.localStorage.setItem("accessToken", token);
     setIsSuccess(true);
     setToast({ status: res.status, message: msg });
     history.push("/");

@@ -45,16 +45,17 @@ function App({ setUser }) {
         const { user } = res.data.user;
         setUser(user);
       } catch (error) {
-        window.localStorage.removeItem("token");
+        window.localStorage.removeItem("accessToken");
         history.push("/login");
       }
     }
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem("accessToken");
     if (!token) return;
 
     fetchAuth();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
 
   return (
     <Layout>
