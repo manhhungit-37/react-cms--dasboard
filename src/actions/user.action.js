@@ -1,6 +1,5 @@
 export const LOGOUT = "USER/LOGOUT";
 export const SET_USER = "USER/SET_USER";
-export const SET_IS_SUCCESS = "USER/SET_IS_SUCCESS";
 
 export const setUser = payload => {
   return {
@@ -9,14 +8,8 @@ export const setUser = payload => {
   }
 }
 
-export const setIsSuccess = payload => {
-  return {
-    type: SET_IS_SUCCESS,
-    payload,
-  }
-}
-
-export const logout = () => {
+export const logout = (history) => {
   window.localStorage.removeItem("token");
+  history.replace('/login');
   return { type: LOGOUT };
 }

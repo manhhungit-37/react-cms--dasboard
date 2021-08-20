@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams, useHistory, useRouteMatch } from "react-router-dom";
 
 // ant core
 import {  Layout, Menu } from 'antd';
@@ -15,11 +15,16 @@ import {
 
 const { Sider } = Layout;
 
+const navList = ['/report', '/photo/list', '/kanban', '/members', '/users'];
+
 function Navbar({ collapsed }) {
+  const location = useLocation();
+  console.log('location', location);
+
   return (
     <Sider trigger={null} collapsible collapsed={collapsed}>
       <div className="logo" />
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+      <Menu theme="dark" mode="inline" defaultSelectedKeys={[]}>
         
         <Menu.Item key="1" icon={<DashboardOutlined />}>
           <Link to="/report">

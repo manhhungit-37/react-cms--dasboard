@@ -1,8 +1,7 @@
-import { LOGOUT, SET_USER, SET_IS_SUCCESS } from 'actions/user.action';
+import { LOGOUT, SET_USER } from 'actions/user.action';
 
 const initState = {
   user: null,
-  isSuccess: false
 }
 
 const reducer = (state = initState, { type, payload }) => {
@@ -14,18 +13,10 @@ const reducer = (state = initState, { type, payload }) => {
       }
     }
 
-    case SET_IS_SUCCESS: {
-      return {
-        ...state,
-        isSuccess: payload
-      }
-    }
-
     case LOGOUT: {
       return {
         ...state,
         user: null,
-        isSuccess: false
       }
     }
 

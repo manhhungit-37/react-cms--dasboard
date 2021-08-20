@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // ant core
@@ -38,6 +38,8 @@ function App({ setUser }) {
     setCollapsed(prevState => !prevState)
   }
 
+  console.log('app');
+
   useEffect(() => {
     const fetchAuth = async () => {
       try {
@@ -46,7 +48,7 @@ function App({ setUser }) {
         setUser(user);
       } catch (error) {
         window.localStorage.removeItem("token");
-        history.push("/login");
+        history.replace("/login");
       }
     }
     const token = window.localStorage.getItem("token");
@@ -57,32 +59,34 @@ function App({ setUser }) {
   }, [])
 
   return (
-    <Layout>
-      <Navbar collapsed={collapsed} />
-      <Layout className="site-layout">
+    <>
+      <Layout>
+        <Navbar collapsed={collapsed} />
+        <Layout className="site-layout">
 
-        <HeaderComponent collapsed={collapsed} handleToggle={handleToggle} />
-      
-        <Content
-          className="site-layout-background"
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-          }}
-        >
-          <Switch>
-            <Route path="/photo/list" component={PhotoList} />
-            <Route path="/photo/:id" component={PhotoDetail} />
-            <Route path="/kanban" component={Kanban} />
-            <Route path="/member/add" component={AddMember} />
-            <Route path="/member" component={Member} />
-            <Route path="/user" component={User} />
-            <Route path="/" component={Report} />
-          </Switch>
-        </Content>
+          <HeaderComponent collapsed={collapsed} handleToggle={handleToggle} />
+        
+          <Content
+            className="site-layout-background"
+            style={{
+              margin: '24px 16px',
+              padding: 24,
+              minHeight: 280,
+            }}
+          >
+            <Switch>
+              <Route path="/photo/list" component={PhotoList} />
+              <Route path="/photo/:id" component={PhotoDetail} />
+              <Route path="/kanban" component={Kanban} />
+              <Route path="/member/add" component={AddMember} />
+              <Route path="/member" component={Member} />
+              <Route path="/user" component={User} />
+              <Route path="/" component={Report} />
+            </Switch>
+          </Content>
+        </Layout>
       </Layout>
-    </Layout>
+    </>
   );
 }
 

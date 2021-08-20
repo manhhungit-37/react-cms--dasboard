@@ -10,14 +10,12 @@ import { setToast } from 'actions/app.action';
 
 //service
 import httpRequest from 'services/httpRequest';
-import { setIsSuccess } from 'actions/user.action';
 
 const mapDispatchToProps = {
   setToast,
-  setIsSuccess
 }
 
-const Login = ({ setToast, setIsSuccess }) => {
+const Login = ({ setToast }) => {
   const history = useHistory();
 
   const login = async (data, history) =>  {
@@ -30,9 +28,8 @@ const Login = ({ setToast, setIsSuccess }) => {
     })
     const { token, msg } = res.data;
     window.localStorage.setItem("token", token);
-    setIsSuccess(true);
     setToast({ status: res.status, message: msg });
-    history.push("/");
+    history.replace("/");
   }
 
   //login

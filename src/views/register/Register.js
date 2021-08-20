@@ -29,11 +29,11 @@ function Register({ setToast }) {
       showSpinner: true
     })
     setToast({ status: res.status, message: res.data?.msg });
-    history.push("/login");
+    history.replace("/login");
   }
 
   const onFinish = account => {
-    account.role = "guest";
+    account.role = "operator";
     register(account, history);
   };
 
