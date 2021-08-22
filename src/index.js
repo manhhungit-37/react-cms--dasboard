@@ -31,8 +31,6 @@ const Register = React.lazy(() => import('views/register'));
 
 initRequest(store);
 
-console.log("index");
-
 ReactDOM.render(
   <Provider store={store}>
     <Suspense fallback={<div/>}>

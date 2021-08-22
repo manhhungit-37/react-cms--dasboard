@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useLocation, useParams, useHistory, useRouteMatch } from "react-router-dom";
+import React from 'react';
+import { Link, useLocation} from "react-router-dom";
 
 // ant core
 import {  Layout, Menu } from 'antd';
@@ -20,8 +20,6 @@ const navList = ['/report', '/photo', '/kanban', '/member', '/user'];
 function Navbar({ collapsed }) {
   const location = useLocation();
   const selectedKey = navList.findIndex(item => location.pathname.startsWith(item));
-
-  console.log(location);
 
   return (
     <Sider trigger={null} collapsible collapsed={collapsed}>

@@ -38,8 +38,6 @@ function App({ setUser }) {
     setCollapsed(prevState => !prevState)
   }
 
-  console.log('app');
-
   useEffect(() => {
     const fetchAuth = async () => {
       try {

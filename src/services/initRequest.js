@@ -31,12 +31,12 @@ export default function initRequest(store) {
         store.dispatch(showLoading());
       }
       // show toast
-      if(config.showToast) {
-        store.dispatch(setToast({
-          status: 400,
-          message: ''   
-        }));
-      }
+      // if(config.showToast) {
+      //   store.dispatch(setToast({
+      //     status: 400,
+      //     message: ''   
+      //   }));
+      // }
       // add x-auth-token
       const accessToken = getAccessToken();
       if(accessToken) {
@@ -72,7 +72,7 @@ export default function initRequest(store) {
       //       refreshToken: 'xxx'
       //     });
       //     window.localStorage.setItem("accessToken", result.data.accessToken);
-      //     instance.defaults.headers.common["x-access-token"] =  result.data.accessToken;
+      //     instance.defaults.headers.common["x-auth-token"] =  result.data.accessToken;
 
       //     return instance(error.config);
       //   } catch (err) {

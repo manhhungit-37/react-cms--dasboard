@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 //antd
@@ -15,14 +16,26 @@ import { ACTION_NAME } from 'configs/roles';
 // apis
 import * as userApi from 'apis/user.api'
 
+// hooks
+import useQueryString from 'hooks/useQueryString';
+
 const mapDispatchToProps = {
   setToast
 }
 
 function User({ setToast }) {
-  const [users, setUsers] = useState([]);
+  const queryString = useQueryString();
+  const page = Number(queryString.get('page')) || 1;
+  const limit = Number(queryString.get('limit')) || 10;
+  const [users, setUsers] = useState({
+    data: [],
+    limit,
+    page,
+    total: 10
+  });
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
   const [userItem, setUserItem] = useState(null);
+  const history = useHistory();
 
   const columns = [
     {
@@ -77,30 +90,21 @@ function User({ setToast }) {
   ];
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(users.page, users.limit);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // handle infinite scroll
-  function handleScroll() {
-    if(window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight)  return
-    console.log(2321)
-      fetchUsers()
-  
-  }
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
-
-
-  async function fetchUsers() {
-    const res = await userApi.fetchUsers();
-    const { data } = res.data;
+  async function fetchUsers(page, limit) {
+    const res = await userApi.fetchUsers(page, limit);
+    const { data, limit: limitSize, page: pageSize, total } = res.data;
     data?.map(user => user.key = user._id);
-    setUsers(data);
+    const newObj = {
+      data,
+      limit: limitSize,
+      page: pageSize,
+      total
+    }
+    setUsers(newObj);
   }
 
   async function deleteUser() {
@@ -108,8 +112,7 @@ function User({ setToast }) {
       const res = await userApi.deleteUser(userItem._id);
       const { isSucess } = res.data;
       if(!isSucess) return;
-
-      fetchUsers();
+      fetchUsers(users.page, users.limit);
       setToast({ status: res.status, message: res.data?.msg })
       setIsShowDeleteModal(false)
     } catch(err) {
@@ -117,12 +120,33 @@ function User({ setToast }) {
     }
   }
 
+  function onChangePagination(pageNumber) {
+    const { current, pageSize } = pageNumber;
+    setUsers(prevState => ({
+      ...prevState,
+      data: []
+    }))
+    fetchUsers(current, pageSize);
+
+    history.replace({ pathname: 'user', search: `?page=${current}&limit=${pageSize}`});
+  }
 
   return (
     <>
       <h1 className="component-heading">Users</h1>
 
-      {users ? <Table dataSource={users} columns={columns} /> : 'No Data'}
+      <Table 
+        dataSource={users.data} 
+        columns={columns} 
+        pagination={{ 
+          total: users.total,
+          defaultCurrent: users.page,
+          defaultPageSize: users.limit,
+          showSizeChanger: true,
+          pageSizeOptions: [10, 20, 50, 100]
+        }}
+        onChange={onChangePagination}
+      /> 
 
       <Modal
         title="Delete User"
