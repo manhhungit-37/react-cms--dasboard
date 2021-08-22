@@ -20,8 +20,8 @@ code {
   text-align: center;
 }
 
-.margin-r10 {
-  margin: 0 10px 0 0;
+.w-full {
+  width: 100%;
 }
 
 .primary-color {
@@ -52,11 +52,7 @@ code {
 
 #root,
 .ant-layout.ant-layout-has-sider {
-  height: 100%;
-}
-
-.login-form-forgot {
-  float: right;
+  min-height: 100vh;
 }
 
 .spin {
@@ -139,21 +135,17 @@ code {
 .log-password .ant-input-password input {
   padding: 18px 14px;
   box-shadow: none !important;
-  
 }
 
 .log-input {
-  padding: 18px 14px;
+  height: 4rem;
+  padding: 0 15px;
   box-shadow: none !important;
 }
 
-.date-input {
-  width: 100%;
-}
 
 .log-button {
   text-transform: uppercase;
-  width: 100%;
   color: #fff;
   height: 36px;
   border-radius: 4px;
@@ -162,6 +154,19 @@ code {
 
 .log-button:hover {
   background-color: #303f9f;
+}
+
+
+.select-antd {
+  height: 4rem;
+}
+
+.select-antd .ant-select-selector {
+  height: 100% !important;
+}
+
+.select-antd .ant-select-selector .ant-select-selection-item {
+  margin: auto;
 }
 
 .footer-log {

@@ -27,9 +27,9 @@ const Login = ({ setToast }) => {
       showToast: true
     })
     const { token, msg } = res.data;
-    window.localStorage.setItem("token", token);
+    window.localStorage.setItem("accessToken", token);
     setToast({ status: res.status, message: msg });
-    history.replace("/");
+    history.replace("/report");
   }
 
   //login
@@ -47,7 +47,6 @@ const Login = ({ setToast }) => {
       </Row>
       <Form
         name="normal_login"
-        className="login-form"
         initialValues={{
           remember: true,
         }}
@@ -79,7 +78,7 @@ const Login = ({ setToast }) => {
           />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="login-form-button margin-r10 log-button">
+          <Button type="primary" htmlType="submit" className="log-button w-full">
             SIGN IN
           </Button>
         </Form.Item>

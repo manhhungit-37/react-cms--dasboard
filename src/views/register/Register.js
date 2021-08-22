@@ -47,7 +47,6 @@ function Register({ setToast }) {
       </Row>
       <Form
         name="normal_login"
-        className="login-form"
         initialValues={{
           remember: true,
         }}
@@ -114,7 +113,7 @@ function Register({ setToast }) {
           />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="login-form-button margin-r10 log-button">
+          <Button type="primary" htmlType="submit" className="log-button w-full">
             SIGN UP
           </Button>
         </Form.Item>

@@ -12,3 +12,16 @@ export function getUserAuth() {
 export function deleteUser(id) {
   return httpRequest.delete(`/api/user/${id}`)
 }
+
+export function addUser(data) {
+  return httpRequest.push('/api/user/register', data, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    showSpinner: true
+  })
+}
+
+export function updateUser(id, data) {
+  return httpRequest.put(`/api/user/${id}`, data);
+}

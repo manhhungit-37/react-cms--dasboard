@@ -8,6 +8,11 @@ export const instance = axios.create({
   showSpinner: false
 })
 
+function getAccessToken() {
+  const accessToken = window.localStorage.getItem('accessToken');
+  return accessToken;
+}
+
 export default function initRequest(store) {
   let requestCount = 0;
 
@@ -20,15 +25,22 @@ export default function initRequest(store) {
 
   instance.interceptors.request.use(
     config => {
+      // show spinner
       if (config.showSpinner) {
         requestCount += 1;
         store.dispatch(showLoading());
       }
+      // show toast
       if(config.showToast) {
         store.dispatch(setToast({
           status: 400,
           message: ''   
         }));
+      }
+      // add x-auth-token
+      const accessToken = getAccessToken();
+      if(accessToken) {
+        config.headers['x-auth-token'] = accessToken;
       }
       return config;
     },
@@ -47,10 +59,29 @@ export default function initRequest(store) {
       }
       return res;
     },
-    error => {
+    async (error) => {
       if (error && error.config.showSpinner) {
         decreaseRequestCount();
       }
+
+      // access token expired
+      // if(error.response.status === 401 && error.config._retry) {
+      //   error.config._retry = true;
+      //   try {
+      //     const result = await instance.post("/auth/refreshtoken", {
+      //       refreshToken: 'xxx'
+      //     });
+      //     window.localStorage.setItem("accessToken", result.data.accessToken);
+      //     instance.defaults.headers.common["x-access-token"] =  result.data.accessToken;
+
+      //     return instance(error.config);
+      //   } catch (err) {
+      //     if (err.response && err.response.data) {
+      //       return Promise.reject(err.response.data);
+      //     }
+      //     return Promise.reject(err);
+      //   }
+      // }
 
       // handle errors
       const { status } = error.response;

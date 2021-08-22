@@ -9,7 +9,7 @@ export const setUser = payload => {
 }
 
 export const logout = (history) => {
-  window.localStorage.removeItem("token");
+  window.localStorage.removeItem("accessToken");
   history.replace('/login');
   return { type: LOGOUT };
 }

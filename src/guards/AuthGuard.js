@@ -2,12 +2,12 @@ import React from 'react'
 import { Redirect, Route } from 'react-router';
 
 function AuthGuard({ component: Component, ...rest }) {
-  const token = window.localStorage.getItem("token");
+  const accessToken = window.localStorage.getItem("accessToken");
   return (
     <Route 
       {...rest} 
       render={props => 
-        token ? <Component {...props} /> : <Redirect to="/login" />
+        accessToken ? <Component {...props} /> : <Redirect to="/login" />
       }
     />
   )

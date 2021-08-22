@@ -1,17 +1,25 @@
 import React from 'react';
 
 //antd
-import { Button, Input, Form, DatePicker, Select } from 'antd';
+import { Button, Input, Form, DatePicker, Select, Space } from 'antd';
 import moment from 'moment';
+import { UsergroupAddOutlined } from '@ant-design/icons';
+import { useHistory } from 'react-router';
+import httpRequest from 'services/httpRequest';
 
 const { Option } = Select;
 
 function AddMember() {
+  const history = useHistory();
   const dateFormat = 'YYYY/MM/DD';
 
+  function handleCancel() {
+    history.replace("/member")
+  }
 
-  function onFinish() {
-
+  function onFinish(account) {
+    const res = httpRequest.post('/api/member', account)
+    console.log(account);
   }
 
   return (
@@ -20,7 +28,6 @@ function AddMember() {
       <h3>Information</h3>
       <Form
         name="add_new_member"
-        className="login-form"
         initialValues={{
           district: 'lucy',
           dateJoin: moment('2020/10/20', dateFormat)
@@ -38,7 +45,10 @@ function AddMember() {
               },
             ]}
           >
-            <Input placeholder="First Name *" />
+            <Input 
+              placeholder="First Name *" 
+              className="log-input"
+            />
           </Form.Item>
           <Form.Item
             name="lastName"
@@ -50,7 +60,10 @@ function AddMember() {
               },
             ]}
           >
-            <Input placeholder="Last Name *" />
+            <Input 
+              placeholder="Last Name *" 
+              className="log-input"
+            />
           </Form.Item>
         </Form.Item>
         <Form.Item className="half-input-container">
@@ -71,7 +84,7 @@ function AddMember() {
             <Input
               type="email"
               placeholder="Email"
-             
+              className="log-input"
             />
           </Form.Item>
           <Form.Item
@@ -86,7 +99,7 @@ function AddMember() {
           >
             <Input
               placeholder="Position *"
-             
+              className="log-input"
             />
           </Form.Item>
         </Form.Item>
@@ -96,7 +109,7 @@ function AddMember() {
         >
           <DatePicker 
             format={dateFormat} 
-            className="log-input date-input"
+            className="log-input w-full"
           />
         </Form.Item>
         <h3 style={{margin: '20px 0'}}>Advance</h3>
@@ -111,7 +124,10 @@ function AddMember() {
               },
             ]}
           >
-            <Input placeholder="Address *" />
+            <Input 
+              placeholder="Address *"
+              className="log-input"
+            />
           </Form.Item>
           <Form.Item
             name="district"
@@ -123,9 +139,9 @@ function AddMember() {
               },
             ]}
           >
-            <Select >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
+            <Select className="select-antd">
+              <Option value="jack">District 9</Option>
+              <Option value="lucy">District 8</Option>
             </Select>
           </Form.Item>
           <Form.Item
@@ -138,13 +154,22 @@ function AddMember() {
               },
             ]}
           >
-            <Input placeholder="City" />
+            <Input 
+              placeholder="City" 
+              className="log-input"
+            />
           </Form.Item>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="login-form-button margin-r10 log-button">
-            SIGN UP
-          </Button>
+          <Space size="middle" className="hung">
+            <Button htmlType="button" onClick={handleCancel} className="right-button">
+              CANCEL
+            </Button>
+            <Button type="primary" htmlType="submit">
+              <UsergroupAddOutlined />
+              ADD
+            </Button>
+          </Space>
         </Form.Item>
       </Form>
     </>

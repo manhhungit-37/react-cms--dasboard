@@ -47,16 +47,17 @@ function App({ setUser }) {
         const { user } = res.data.user;
         setUser(user);
       } catch (error) {
-        window.localStorage.removeItem("token");
+        window.localStorage.removeItem("accessToken");
         history.replace("/login");
       }
     }
-    const token = window.localStorage.getItem("token");
-    if (!token) return;
+    const accessToken = window.localStorage.getItem("accessToken");
+    if (!accessToken) return;
 
     fetchAuth();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
 
   return (
     <>
@@ -74,6 +75,7 @@ function App({ setUser }) {
               minHeight: 280,
             }}
           >
+            
             <Switch>
               <Route path="/photo/list" component={PhotoList} />
               <Route path="/photo/:id" component={PhotoDetail} />
@@ -81,7 +83,10 @@ function App({ setUser }) {
               <Route path="/member/add" component={AddMember} />
               <Route path="/member" component={Member} />
               <Route path="/user" component={User} />
-              <Route path="/" component={Report} />
+              <Route path="/report" component={Report} />
+              <Route path="/">
+                <Redirect to="/report" />
+              </Route>
             </Switch>
           </Content>
         </Layout>

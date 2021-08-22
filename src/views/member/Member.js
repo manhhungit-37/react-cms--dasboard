@@ -85,7 +85,7 @@ function Member({ setToast }) {
     const fetchMembers = async () => {
       const res = await httpRequest.get('/api/member', {
         headers: {
-          'x-auth-token': window.localStorage.getItem('token')
+          'x-auth-token': window.localStorage.getItem('accessToken')
         }
       })
       const { data } = res.data;
@@ -115,7 +115,6 @@ function Member({ setToast }) {
         {canAction('create', ACTION_NAME.CREATE_NEW_MEMBER) && (
           <Button 
             type="primary" 
-            className="right-button" 
           >
             <Link to="/member/add">
               <PlusOutlined /> 
