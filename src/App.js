@@ -24,8 +24,7 @@ const AddPhoto = React.lazy(() => import('views/photoList/AddPhoto'));
 const Report = React.lazy(() => import('views/report'));
 const Kanban = React.lazy(() => import('views/kanban'));
 const Member = React.lazy(() => import('views/member'));
-const AddMember = React.lazy(() => import('views/member/AddMember'));
-const EditMember = React.lazy(() => import('views/member/EditMember'));
+const MemberAddEdit = React.lazy(() => import('views/member/MemberAddEdit'));
 const User = React.lazy(() => import('views/user'));
 
 
@@ -85,15 +84,15 @@ function App({ user, setUser }) {
             }}
           >
             
-            {user && (
-              <Switch>
+          {user && (
+              <Switch>  
                 <Route path="/photo/list" component={PhotoList} />
                 <Route path="/photo/add/" component={AddPhoto} />
                 <Route path="/photo/edit/:id" component={EditPhoto} />
                 <Route path="/photo/:id" component={PhotoDetail} />
                 <Route path="/kanban" component={Kanban} />
-                <Route exact path="/member/add" component={AddMember} />
-                <Route path="/member/:id" component={EditMember} />
+                <Route exact path="/member/add" component={MemberAddEdit} />
+                <Route path="/member/:id" component={MemberAddEdit} />
                 <Route path="/member" component={Member} />
                 <Route path="/user" component={User} />
                 <Route path="/report" component={Report} />

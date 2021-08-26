@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 //antd
@@ -124,50 +124,64 @@ function User({ setToast }) {
     try {
       const res = await userApi.deleteUser(userItem._id);
       const { isSucess } = res.data;
-      if(!isSucess) return;
+      if(!isSucess) {
+        setToast({ status: 404, message: `Can't delete user` });
+        return;
+      }
+      
       fetchUsers(users.page, users.limit);
       setToast({ status: res.status, message: res.data?.msg })
-      setIsShowDeleteModal(false);
-      setConfirmLoading(false);
     } catch(err) {
       setToast({ status: 404, message: `Can't delete user` })
-      setIsShowDeleteModal(false);
-      setConfirmLoading(false);
     }
+    setIsShowDeleteModal(false);
+    setConfirmLoading(false);
   }
 
   async function updateUser() {
     setConfirmLoading(true);
-    form
-      .validateFields()
-      .then((values) => {
-        return userApi.updateUser(userItem._id, values);
-      })
-      .then(res => {
-        fetchUsers(users.page, users.limit);
-        setIsShowEditModal(false);
-        form.resetFields();
-        setToast({ status: res.status, message: res.data?.msg });
-        setConfirmLoading(false);
-      })
-      .catch((info) => {
-        setConfirmLoading(false);
-      });
+    // form
+    //   .validateFields()
+    //   .then((values) => {
+    //     return userApi.updateUser(userItem._id, values);
+    //   })
+    //   .then(res => {
+    //     fetchUsers(users.page, users.limit);
+    //     setIsShowEditModal(false);
+    //     form.resetFields();
+    //     setToast({ status: res.status, message: res.data?.msg });
+    //   })
+    //   .catch((info) => {
+    //   })
+    //   .finally(() => {
+    //     setConfirmLoading(false);
+    //   })
+    try {
+      const values = await form.validateFields();
+      const res = await userApi.updateUser(userItem._id, values);
+      const { isSucess } = res.data;
+      if(!isSucess) {
+        setToast({ status: 404, message: `Can't update user` })
+        return;
+      };
+      fetchUsers(users.page, users.limit);
+      setIsShowEditModal(false);
+      form.resetFields();
+      setToast({ status: res.status, message: res.data?.msg });
+    } catch(error) {
+      setToast({ status: 404, message: `Can't update user` })
+    }
+    setConfirmLoading(false);
   }
 
-  function cancel() {
+  function cancelEditUser() {
     form.resetFields();
     setIsShowEditModal(false)
   }
 
   function onChangePagination(pageNumber) {
     const { current, pageSize } = pageNumber;
-    // setUsers(prevState => ({
-    //   ...prevState,
-    //   data: []
-    // }))
     fetchUsers(current, pageSize);
-
     history.replace({ pathname: 'user', search: `?page=${current}&limit=${pageSize}` });
   }
 
@@ -193,9 +207,9 @@ function User({ setToast }) {
         centered
         visible={isShowEditModal}
         confirmLoading={confirmLoading}
-        onCancel={cancel}
+        onCancel={cancelEditUser}
         footer={[
-          <Button key="cancel" htmlType="button" onClick={cancel}>
+          <Button key="cancel" htmlType="button" onClick={cancelEditUser}>
               Cancel
           </Button>,
           <Button 
@@ -240,7 +254,7 @@ function User({ setToast }) {
         onOk={() => deleteUser()}
         onCancel={() => setIsShowDeleteModal(false)}
       >
-        <div>Are you sure to delete user {userItem?.email}</div>
+        <div>Are you sure to delete <b>{userItem?.email}</b> ?</div>
       </Modal>
     </>
   )

@@ -10,7 +10,7 @@ export function getUserAuth() {
 }
 
 export function deleteUser(id) {
-  return httpRequest.delete(`/api/user/${id}`)
+  return httpRequest.delete(`/api/user/${id}`, { showToast: true })
 }
 
 export function addUser(data) {
@@ -23,5 +23,5 @@ export function addUser(data) {
 }
 
 export function updateUser(id, data) {
-  return httpRequest.put(`/api/user/${id}`, data);
+  return httpRequest.put(`/api/user/${id}`, data, { showToast: true });
 }

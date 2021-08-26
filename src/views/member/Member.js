@@ -9,9 +9,6 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 //helper
 import { canAction } from 'helpers/canAction';
 
-//service
-import httpRequest from 'services/httpRequest';
-
 //config 
 import { ACTION_NAME } from 'configs/roles';
 
@@ -23,6 +20,7 @@ import * as memberApi from 'apis/member.api'
 
 //hooks
 import useQueryString from 'hooks/useQueryString';
+import useSafeState from 'hooks/useSafeState';
 
 const mapDispatchToProps = {
   setToast
@@ -36,7 +34,7 @@ function Member({ setToast }) {
   const page = Number(queryString.get('page')) || 1;
   const limit = Number(queryString.get('limit')) || 10;
   const history = useHistory();
-  const [members, setMembers] = useState({
+  const [members, setMembers] = useSafeState({
     data: [],
     limit,
     page,

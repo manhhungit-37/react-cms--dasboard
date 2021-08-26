@@ -31,12 +31,12 @@ export default function initRequest(store) {
         store.dispatch(showLoading());
       }
       // show toast
-      // if(config.showToast) {
-      //   store.dispatch(setToast({
-      //     status: 400,
-      //     message: ''   
-      //   }));
-      // }
+      if(config.showToast) {
+        store.dispatch(setToast({
+          status: 400,
+          message: ''   
+        }));
+      }
       // add x-auth-token
       const accessToken = getAccessToken();
       if(accessToken) {

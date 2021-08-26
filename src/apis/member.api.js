@@ -1,7 +1,7 @@
 import httpRequest from '../services/httpRequest';
 
 export function addMember(data) {
-  return httpRequest.post('/api/member', data);
+  return httpRequest.post('/api/member', data, { showToast: true });
 }
 
 export function fetchMembers(page = 1, limit = 10) {
@@ -13,9 +13,9 @@ export function getMember(id) {
 }
 
 export function deleteMember(id) {
-  return httpRequest.delete(`/api/member/${id}`);
+  return httpRequest.delete(`/api/member/${id}`, { showToast: true });
 }
 
 export function updateMember(id, data) {
-  return httpRequest.put(`/api/member/${id}`, data);
+  return httpRequest.put(`/api/member/${id}`, data, { showToast: true });
 }

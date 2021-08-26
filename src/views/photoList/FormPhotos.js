@@ -28,15 +28,8 @@ function FormPhotos({ type, photo, onFinish, loadingButton }) {
     history.replace('/photo/list');
   }
 
-
-  function randomPhoto(image) {
-    const currentIndex = listAvatar.indexOf(image);
-    let newIndex = currentIndex;
-
-    while (listAvatar[newIndex] === image) {
-      newIndex = Math.trunc(Math.random() * listAvatar.length);
-    }
-
+  function randomPhoto() {
+    const newIndex = Math.trunc(Math.random() * listAvatar.length);
     setImageUrl(listAvatar[newIndex]);
   }
 
@@ -105,7 +98,7 @@ function FormPhotos({ type, photo, onFinish, loadingButton }) {
         >
           <Image src={imageUrl} alt={imageUrl} />
         </Form.Item>
-        <Button onClick={() => randomPhoto(imageUrl)}>RANDOM PHOTO</Button>  
+        <Button onClick={() => randomPhoto()}>RANDOM PHOTO</Button>  
         <Form.Item  className="text-right">
           <Space size="middle">
             <Button htmlType="button" onClick={handleCancel} className="right-button primary-color">
