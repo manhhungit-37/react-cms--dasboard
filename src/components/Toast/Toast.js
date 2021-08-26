@@ -12,7 +12,7 @@ const mapStateTopProps = state => ({
   message: state.app.toast.message
 })
 
-// //notify message error
+//notify message error
 const options = {
   position: "bottom-left",
   autoClose: 3000,
@@ -44,6 +44,10 @@ function Toast({ status, message }) {
         notifyError(message);
         break;
       }
+      case STATUS_CODE[500]: {
+        notifyError(message);
+        break;
+      }
       default:
         break
     }
@@ -54,6 +58,7 @@ function Toast({ status, message }) {
       newestOnTop
       rtl={false}
       closeOnClick={false}
+      pauseOnFocusLoss={false}
     />
   )
 }

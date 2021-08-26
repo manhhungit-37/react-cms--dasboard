@@ -14,7 +14,7 @@ function defineAbilitiesFor(role) {
     }
     case 'operator': {
       // photo
-      can(['create'], ACTION_NAME.CREATE_NEW_PHOTO);
+      can(['create', 'view'], [ACTION_NAME.CREATE_NEW_PHOTO, ACTION_NAME.VIEW_PHOTO]);
       break;
     }
     case 'guest': {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation} from "react-router-dom";
 
 // ant core
@@ -19,13 +19,12 @@ const navList = ['/report', '/photo', '/kanban', '/member', '/user'];
 
 function Navbar({ collapsed }) {
   const location = useLocation();
-  const selectedKey = navList.findIndex(item => location.pathname.startsWith(item));
+  let selectedKey = navList.findIndex(item => location.pathname.startsWith(item));
 
   return (
     <Sider trigger={null} collapsible collapsed={collapsed}>
       <div className="logo" />
       <Menu theme="dark" mode="inline" defaultSelectedKeys={[`${selectedKey + 1}`]}>
-        
         <Menu.Item key="1" icon={<DashboardOutlined />}>
           <Link to="/report">
             Report

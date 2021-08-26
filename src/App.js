@@ -12,17 +12,29 @@ import { setUser } from 'actions/user.action';
 import Navbar from 'components/Navbar';
 import HeaderComponent from 'components/Header';
 
+
 // api
 import * as userApi from 'apis/user.api';
 
 // views
 const PhotoList = React.lazy(() => import('views/photoList'));
-const PhotoDetail = React.lazy(() => import('views/photoDetail'));
+const PhotoDetail = React.lazy(() => import('views/photoList/PhotoDetail'));
+const EditPhoto = React.lazy(() => import('views/photoList/EditPhoto'));
+const AddPhoto = React.lazy(() => import('views/photoList/AddPhoto'));
 const Report = React.lazy(() => import('views/report'));
 const Kanban = React.lazy(() => import('views/kanban'));
 const Member = React.lazy(() => import('views/member'));
-const User = React.lazy(() => import('views/user'));
 const AddMember = React.lazy(() => import('views/member/AddMember'));
+const EditMember = React.lazy(() => import('views/member/EditMember'));
+const User = React.lazy(() => import('views/user'));
+
+
+
+const mapStateToProps = state => {
+  return {
+    user: state.user.user
+  }
+}
 
 const mapDispatchToProps = {
   setUser,
@@ -30,7 +42,7 @@ const mapDispatchToProps = {
 
 const { Content } = Layout;
 
-function App({ setUser }) {
+function App({ user, setUser }) {
   const history = useHistory();
   const [collapsed, setCollapsed] = useState(true);
 
@@ -56,7 +68,6 @@ function App({ setUser }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
   return (
     <>
       <Layout>
@@ -74,18 +85,23 @@ function App({ setUser }) {
             }}
           >
             
-            <Switch>
-              <Route path="/photo/list" component={PhotoList} />
-              <Route path="/photo/:id" component={PhotoDetail} />
-              <Route path="/kanban" component={Kanban} />
-              <Route path="/member/add" component={AddMember} />
-              <Route path="/member" component={Member} />
-              <Route path="/user" component={User} />
-              <Route path="/report" component={Report} />
-              <Route path="/">
-                <Redirect to="/report" />
-              </Route>
-            </Switch>
+            {user && (
+              <Switch>
+                <Route path="/photo/list" component={PhotoList} />
+                <Route path="/photo/add/" component={AddPhoto} />
+                <Route path="/photo/edit/:id" component={EditPhoto} />
+                <Route path="/photo/:id" component={PhotoDetail} />
+                <Route path="/kanban" component={Kanban} />
+                <Route exact path="/member/add" component={AddMember} />
+                <Route path="/member/:id" component={EditMember} />
+                <Route path="/member" component={Member} />
+                <Route path="/user" component={User} />
+                <Route path="/report" component={Report} />
+                <Route path="/">
+                  <Redirect to="/report" />
+                </Route>
+              </Switch>
+            )}
           </Content>
         </Layout>
       </Layout>
@@ -93,4 +109,4 @@ function App({ setUser }) {
   );
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

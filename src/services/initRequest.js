@@ -84,19 +84,19 @@ export default function initRequest(store) {
       // }
 
       // handle errors
-      const { status } = error.response;
+      const { status } = error?.response;
       switch(status) {
         case 400: {
           store.dispatch(setToast({
             status,
-            message: error.response?.data?.msg || ''   
+            message: error.response.data?.msg || ''   
           }));
           break;
         }
         case 500: {
           store.dispatch(setToast({
             status,
-            message: error.response?.data?.msg || ''   
+            message: error.response.data?.msg || ''   
           }));
           break;
         }

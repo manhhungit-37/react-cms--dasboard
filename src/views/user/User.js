@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 //antd
-import { Button, Space, Table, Modal } from 'antd';
-import { DeleteOutlined, EditOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Button, Space, Table, Modal, Form, Select } from 'antd';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+
+//helper
+import { canAction } from 'helpers/canAction';
 
 //actions
-import { canAction } from 'helpers/canAction';
 import { setToast } from 'actions/app.action';
 
 //config
@@ -24,6 +26,13 @@ const mapDispatchToProps = {
 }
 
 function User({ setToast }) {
+  const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
+  const [isShowEditModal, setIsShowEditModal] = useState(false);
+  const [userItem, setUserItem] = useState(null);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  
+  const [form] = Form.useForm();
+  const history = useHistory();
   const queryString = useQueryString();
   const page = Number(queryString.get('page')) || 1;
   const limit = Number(queryString.get('limit')) || 10;
@@ -33,10 +42,6 @@ function User({ setToast }) {
     page,
     total: 10
   });
-  const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
-  const [userItem, setUserItem] = useState(null);
-  const history = useHistory();
-
   const columns = [
     {
       title: 'Name',
@@ -64,6 +69,10 @@ function User({ setToast }) {
             <Button 
               title="Edit"
               className="antd-button primary-color"
+              onClick={() => {
+                setIsShowEditModal(true);
+                setUserItem(record);
+              }}
             >
               <EditOutlined />
             </Button>
@@ -81,7 +90,6 @@ function User({ setToast }) {
               >
                 <DeleteOutlined />
               </Button>
-              
             </>
           )}
         </Space>
@@ -95,40 +103,72 @@ function User({ setToast }) {
   }, [])
 
   async function fetchUsers(page, limit) {
-    const res = await userApi.fetchUsers(page, limit);
-    const { data, limit: limitSize, page: pageSize, total } = res.data;
-    data?.map(user => user.key = user._id);
-    const newObj = {
-      data,
-      limit: limitSize,
-      page: pageSize,
-      total
+    try {
+      const res = await userApi.fetchUsers(page, limit);
+      const { data, page: pageSize, limit: limitSize, total } = res.data;
+      data?.map(user => user.key = user._id);
+      setUsers(prevState => ({
+        ...prevState,
+        page: pageSize,
+        limit: limitSize,
+        data,
+        total
+      }));
+    } catch (error) {
+      setToast({ status: 404, message: "Can not get users" });
     }
-    setUsers(newObj);
   }
 
   async function deleteUser() {
+    setConfirmLoading(true);
     try {
       const res = await userApi.deleteUser(userItem._id);
       const { isSucess } = res.data;
       if(!isSucess) return;
       fetchUsers(users.page, users.limit);
       setToast({ status: res.status, message: res.data?.msg })
-      setIsShowDeleteModal(false)
+      setIsShowDeleteModal(false);
+      setConfirmLoading(false);
     } catch(err) {
       setToast({ status: 404, message: `Can't delete user` })
+      setIsShowDeleteModal(false);
+      setConfirmLoading(false);
     }
+  }
+
+  async function updateUser() {
+    setConfirmLoading(true);
+    form
+      .validateFields()
+      .then((values) => {
+        return userApi.updateUser(userItem._id, values);
+      })
+      .then(res => {
+        fetchUsers(users.page, users.limit);
+        setIsShowEditModal(false);
+        form.resetFields();
+        setToast({ status: res.status, message: res.data?.msg });
+        setConfirmLoading(false);
+      })
+      .catch((info) => {
+        setConfirmLoading(false);
+      });
+  }
+
+  function cancel() {
+    form.resetFields();
+    setIsShowEditModal(false)
   }
 
   function onChangePagination(pageNumber) {
     const { current, pageSize } = pageNumber;
-    setUsers(prevState => ({
-      ...prevState,
-      data: []
-    }))
+    // setUsers(prevState => ({
+    //   ...prevState,
+    //   data: []
+    // }))
     fetchUsers(current, pageSize);
 
-    history.replace({ pathname: 'user', search: `?page=${current}&limit=${pageSize}`});
+    history.replace({ pathname: 'user', search: `?page=${current}&limit=${pageSize}` });
   }
 
   return (
@@ -149,9 +189,53 @@ function User({ setToast }) {
       /> 
 
       <Modal
+        title="Edit User"
+        centered
+        visible={isShowEditModal}
+        confirmLoading={confirmLoading}
+        onCancel={cancel}
+        footer={[
+          <Button key="cancel" htmlType="button" onClick={cancel}>
+              Cancel
+          </Button>,
+          <Button 
+            type="primary" 
+            form={form} 
+            key="submit" 
+            htmlType="submit"
+            onClick={updateUser} 
+          >
+              Ok
+          </Button>
+        ]}
+      >
+        <Form
+          name="basic"
+          form={form}
+          labelCol={{ span: 3 }}
+          wrapperCol={{ span: 21 }}
+          initialValues={{ 
+            remember: true,
+            role: "operator"
+          }}
+        >
+          <Form.Item
+            label="Role"
+            name="role"
+            rules={[{ required: true, message: 'Please input your role!' }]}
+          >
+            <Select>
+              <Select.Option value="admin">Admin</Select.Option>
+              <Select.Option value="operator">Operator</Select.Option>
+              <Select.Option value="guest">Guest</Select.Option>
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Modal
         title="Delete User"
         centered
-        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+        confirmLoading={confirmLoading}
         visible={isShowDeleteModal}
         onOk={() => deleteUser()}
         onCancel={() => setIsShowDeleteModal(false)}
