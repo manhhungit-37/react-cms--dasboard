@@ -8,8 +8,8 @@ import { LockFilled } from '@ant-design/icons';
 //action
 import { setToast } from 'actions/app.action';
 
-//service
-import httpRequest from 'services/httpRequest';
+//api
+import * as userApi from 'apis/user.api';
 
 const mapDispatchToProps = {
   setToast,
@@ -19,13 +19,7 @@ const Login = ({ setToast }) => {
   const history = useHistory();
 
   const login = async (data, history) =>  {
-    const res = await httpRequest.post("/api/user/login", data, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      showSpinner: true,
-      showToast: true
-    })
+    const res = await userApi.loginUser(data);
     const { token, msg } = res.data;
     window.localStorage.setItem("accessToken", token);
     setToast({ status: res.status, message: msg });

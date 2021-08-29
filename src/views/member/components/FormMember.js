@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 //antd
 import { Button, Input, Form, DatePicker, Select, Space } from 'antd';
 import moment from 'moment';
-import { UsergroupAddOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 
 //actions
 import { setToast } from 'actions/app.action';
@@ -16,7 +16,17 @@ const mapDispatchToProps = {
   setToast
 }
 
-function FormMember({ type, member, onFinish, loadingButton }) {
+const listAvatar = [
+  'https://cdn.fakercloud.com/avatars/jodytaggart_128.jpg',
+  'https://cdn.fakercloud.com/avatars/byryan_128.jpg',
+  'https://cdn.fakercloud.com/avatars/terrorpixel_128.jpg',
+  'https://cdn.fakercloud.com/avatars/madebyvadim_128.jpg',
+  'https://cdn.fakercloud.com/avatars/her_ruu_128.jpg',
+  'https://cdn.fakercloud.com/avatars/runningskull_128.jpg',
+]
+
+function FormMember({ member, onFinish, loadingButton }) {
+  const [imageUrl, setImageUrl] = useState(member?.avatar ?? listAvatar[0]);
   const history = useHistory();
   const dateFormat = 'YYYY/MM/DD';
   const [form] = Form.useForm();
@@ -26,18 +36,28 @@ function FormMember({ type, member, onFinish, loadingButton }) {
   }
 
   function onSubmit(account) {
+    account.avatar = imageUrl; 
     onFinish(account);
     form.resetFields();
   }
 
+  function randomImage(imageUrl) {
+    const currentIndex = listAvatar.indexOf(imageUrl);
+    let newIndex = currentIndex;
+    while (newIndex === currentIndex) {
+      newIndex = Math.trunc(Math.random() * listAvatar.length);
+    }
+    setImageUrl(listAvatar[newIndex]);
+  }
+
   return (
     <>
-      <h1 className="component-heading capitalize">{`${type} Member`}</h1>
+      <h1 className="component-heading capitalize">{member ? 'edit' : 'add'} Member</h1>
       <h3>Information</h3>
       <Form
-        name={`${type}_member`}
+        name={member ? 'edit_member' : 'add_new_member'}
         form={form}
-        initialValues={type === 'edit'
+        initialValues={member
           ? {
             firstName: member.firstName,
             lastName: member.lastName,
@@ -51,6 +71,12 @@ function FormMember({ type, member, onFinish, loadingButton }) {
         }
         onFinish={onSubmit}
       >
+        <Form.Item
+          name="avatar"
+        >
+          <img src={imageUrl} alt={imageUrl} />
+        </Form.Item>
+        <Button className="mg-bt-10" onClick={() => randomImage(imageUrl)} >RANDOM PHOTO</Button>
         <Form.Item className="half-input-container">
           <Form.Item
             name="firstName"
@@ -207,8 +233,22 @@ function FormMember({ type, member, onFinish, loadingButton }) {
               CANCEL
             </Button>
             <Button type="primary" htmlType="submit" loading={loadingButton} className="uppercase">
-              <UsergroupAddOutlined />
-              {type}
+              {member
+                ? (
+                  <span>
+                    <EditOutlined />
+                    &nbsp;
+                    EDIT 
+                  </span>
+                )
+                : (
+                  <span>
+                    <PlusOutlined /> 
+                    &nbsp;
+                    ADD
+                  </span>
+                )
+              }
             </Button>
           </Space>
         </Form.Item>

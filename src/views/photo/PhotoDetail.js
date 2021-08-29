@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useHistory } from 'react-router'
+import { useParams } from 'react-router'
 
 //api
 import * as photoApi from 'apis/photo.api';
 import { setToast } from 'actions/app.action';
 
+//hooks
+import useIsMounted from 'hooks/useIsMounted';
+
 function PhotoDetail() {
   const [photo, setPhoto] = useState(null);
+  const isMounted = useIsMounted();
   const params = useParams();
-  const history = useHistory();
 
   useEffect(() => {
     async function getPhoto() {
       try {
         const res = await photoApi.getPhoto(params.id);
         const { data } = res.data;
-        setPhoto(data);
+        if (isMounted) {
+          setPhoto(data);
+        }
       } catch (error) {
         setToast({ status: error.response?.status, message: "Can not get data of the photo" });
       }

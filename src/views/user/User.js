@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -20,6 +20,7 @@ import * as userApi from 'apis/user.api'
 
 // hooks
 import useQueryString from 'hooks/useQueryString';
+import useIsMounted from 'hooks/useIsMounted';
 
 const mapDispatchToProps = {
   setToast
@@ -30,6 +31,7 @@ function User({ setToast }) {
   const [isShowEditModal, setIsShowEditModal] = useState(false);
   const [userItem, setUserItem] = useState(null);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const isMounted = useIsMounted();
   
   const [form] = Form.useForm();
   const history = useHistory();
@@ -43,6 +45,14 @@ function User({ setToast }) {
     total: 10
   });
   const columns = [
+    {
+      title: 'Avatar',
+      key: 'avatar',
+      dataIndex: 'avatar',
+      render: text => (
+        <img src={text} alt={text} className="w-100px" />
+      )
+    },
     {
       title: 'Name',
       key: 'name',
@@ -65,7 +75,7 @@ function User({ setToast }) {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          {canAction('update', ACTION_NAME.UPDATE_USER) && (
+          {record.role !== "admin" && canAction('update', ACTION_NAME.UPDATE_USER) && (
             <Button 
               title="Edit"
               className="antd-button primary-color"
@@ -99,6 +109,7 @@ function User({ setToast }) {
 
   useEffect(() => {
     fetchUsers(users.page, users.limit);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -107,13 +118,15 @@ function User({ setToast }) {
       const res = await userApi.fetchUsers(page, limit);
       const { data, page: pageSize, limit: limitSize, total } = res.data;
       data?.map(user => user.key = user._id);
-      setUsers(prevState => ({
-        ...prevState,
-        page: pageSize,
-        limit: limitSize,
-        data,
-        total
-      }));
+      if (isMounted) {
+        setUsers(prevState => ({
+          ...prevState,
+          page: pageSize,
+          limit: limitSize,
+          data,
+          total
+        }));
+      }
     } catch (error) {
       setToast({ status: 404, message: "Can not get users" });
     }
@@ -140,22 +153,7 @@ function User({ setToast }) {
 
   async function updateUser() {
     setConfirmLoading(true);
-    // form
-    //   .validateFields()
-    //   .then((values) => {
-    //     return userApi.updateUser(userItem._id, values);
-    //   })
-    //   .then(res => {
-    //     fetchUsers(users.page, users.limit);
-    //     setIsShowEditModal(false);
-    //     form.resetFields();
-    //     setToast({ status: res.status, message: res.data?.msg });
-    //   })
-    //   .catch((info) => {
-    //   })
-    //   .finally(() => {
-    //     setConfirmLoading(false);
-    //   })
+
     try {
       const values = await form.validateFields();
       const res = await userApi.updateUser(userItem._id, values);
@@ -203,10 +201,9 @@ function User({ setToast }) {
       /> 
 
       <Modal
-        title="Edit User"
+        title={<div>Edit User <span className="red-color">{userItem?.email}</span></div>}
         centered
         visible={isShowEditModal}
-        confirmLoading={confirmLoading}
         onCancel={cancelEditUser}
         footer={[
           <Button key="cancel" htmlType="button" onClick={cancelEditUser}>
@@ -215,6 +212,7 @@ function User({ setToast }) {
           <Button 
             type="primary" 
             form={form} 
+            loading={confirmLoading}
             key="submit" 
             htmlType="submit"
             onClick={updateUser} 
@@ -254,7 +252,7 @@ function User({ setToast }) {
         onOk={() => deleteUser()}
         onCancel={() => setIsShowDeleteModal(false)}
       >
-        <div>Are you sure to delete <b>{userItem?.email}</b> ?</div>
+        <div>Are you sure to delete <b className="red-color">{userItem?.email}</b> ?</div>
       </Modal>
     </>
   )

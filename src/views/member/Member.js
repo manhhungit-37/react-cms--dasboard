@@ -21,6 +21,7 @@ import * as memberApi from 'apis/member.api'
 //hooks
 import useQueryString from 'hooks/useQueryString';
 import useSafeState from 'hooks/useSafeState';
+import useIsMounted from 'hooks/useIsMounted';
 
 const mapDispatchToProps = {
   setToast
@@ -31,6 +32,7 @@ function Member({ setToast }) {
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const queryString = useQueryString();
+  const isMounted = useIsMounted();
   const page = Number(queryString.get('page')) || 1;
   const limit = Number(queryString.get('limit')) || 10;
   const history = useHistory();
@@ -42,6 +44,14 @@ function Member({ setToast }) {
   });
 
   const columns = [
+    {
+      title: 'Avatar',
+      key: 'avatar',
+      dataIndex: 'avatar',
+      render: text => (
+        <img src={text} alt={text} className="w-100px" />
+      )
+    },
     {
       title: 'Name',
       key: 'name',
@@ -101,13 +111,15 @@ function Member({ setToast }) {
       const res = await memberApi.fetchMembers(page, limit);
       const { data, total, page: currentPage, limit: limitSize } = res.data;
       data?.map(member => member.key = member._id);
-      setMembers(prevState => ({
-        ...prevState,
-        page: currentPage,
-        limit: limitSize,
-        data,
-        total
-      }));
+      if (isMounted) {
+        setMembers(prevState => ({
+          ...prevState,
+          page: currentPage,
+          limit: limitSize,
+          data,
+          total
+        }));
+      }
     } catch (error) {
       setToast({ status: 404, message: 'Can not get members' });
     }
@@ -172,7 +184,7 @@ function Member({ setToast }) {
         onOk={() => handleDeleteMember()}
         onCancel={() => setIsShowDeleteModal(false)}
       >
-        Are you sure to delete member {memberItem?.email}
+        Are you sure to delete member <b className="red-color">{memberItem?.email}</b>?
       </Modal>
     </div>
   )

@@ -13,12 +13,23 @@ export function deleteUser(id) {
   return httpRequest.delete(`/api/user/${id}`, { showToast: true })
 }
 
-export function addUser(data) {
-  return httpRequest.push('/api/user/register', data, {
+export function loginUser(data) {
+  return httpRequest.post("/api/user/login", data, {
     headers: {
       'Content-Type': 'application/json'
     },
-    showSpinner: true
+    showSpinner: true,
+    showToast: true
+  })
+}
+
+export function addUser(data) {
+  return httpRequest.post('/api/user/register', data, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    showSpinner: true,
+    showToast: true
   })
 }
 

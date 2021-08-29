@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux';
 
@@ -11,6 +11,9 @@ import { Button, Input, Row, Form } from 'antd'
 //action
 import { setToast } from 'actions/app.action';
 
+//api
+import * as userApi from 'apis/user.api';
+
 //services
 import httpRequest from 'services/httpRequest';
 
@@ -18,24 +21,41 @@ const mapDispatchToProps = {
   setToast
 }
 
+const listAvatar = [
+  'https://cdn.fakercloud.com/avatars/jodytaggart_128.jpg',
+  'https://cdn.fakercloud.com/avatars/byryan_128.jpg',
+  'https://cdn.fakercloud.com/avatars/terrorpixel_128.jpg',
+  'https://cdn.fakercloud.com/avatars/madebyvadim_128.jpg',
+  'https://cdn.fakercloud.com/avatars/her_ruu_128.jpg',
+  'https://cdn.fakercloud.com/avatars/runningskull_128.jpg',
+]
+
 function Register({ setToast }) {
+  const [imageUrl, setImageUrl] = useState(listAvatar[0]);
   const history = useHistory();
 
   const register = async (data, history) => {
-    const res = await httpRequest.post("/api/user/register", data, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      showSpinner: true
-    })
+    const res = await userApi.addUser(data);
     setToast({ status: res.status, message: res.data?.msg });
     history.replace("/login");
   }
 
   const onFinish = account => {
+    account.avatar = imageUrl;  
     account.role = "operator";
+    console.log(account);
     register(account, history);
   };
+
+  const randomImage = imageUrl => {
+    const currentIndex = listAvatar.indexOf(imageUrl);
+    let newIndex = currentIndex;
+    while (newIndex === currentIndex) {
+      newIndex = Math.trunc(Math.random() * listAvatar.length)
+    }
+    setImageUrl(listAvatar[newIndex]);
+  }
+
 
   return (
     <div className="wrapper">
@@ -52,6 +72,15 @@ function Register({ setToast }) {
         }}
         onFinish={onFinish}
       >
+        <Form.Item
+          name="avatar"
+          className="text-center"
+        >
+          <img src={imageUrl} alt={imageUrl} className="circle-img" />
+        </Form.Item>
+        <div className="text-center">
+          <Button className="mg-bt-10" onClick={() => randomImage(imageUrl)}>RANDOM PHOTO</Button>
+        </div>
         <Form.Item className="half-input-container">
           <Form.Item
             name="firstName"

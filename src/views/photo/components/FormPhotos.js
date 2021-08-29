@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 
 //antd
 import { Input, Form, Select, Image, Button, Space } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 
@@ -15,7 +15,7 @@ const listAvatar = [
   'https://cdn.fakercloud.com/avatars/bagawarman_128.jpg'
 ];
 
-function FormPhotos({ type, photo, onFinish, loadingButton }) {
+function FormPhotos({ photo, onFinish, loadingButton }) {
   const [imageUrl, setImageUrl] = useState(photo?.image ?? listAvatar[0]);
   const history = useHistory();
 
@@ -35,10 +35,10 @@ function FormPhotos({ type, photo, onFinish, loadingButton }) {
 
   return (
     <>
-      <h1 className="component-heading capitalize">{type} photo</h1>
+      <h1 className="component-heading capitalize">{photo ? 'edit' : 'add'} photo</h1>
       <Form
-        name="add_new_member"
-        initialValues={type === 'edit' 
+        name={photo ? 'edit_photo' : 'add_new_photo'}
+        initialValues={photo 
           ? {
             title: photo.title,
             category: photo.category,
@@ -105,8 +105,22 @@ function FormPhotos({ type, photo, onFinish, loadingButton }) {
               CANCEL
             </Button>
             <Button type="primary" htmlType="submit" loading={loadingButton} className="button-bold ">
-              <PlusOutlined />
-              ADD
+              {photo
+                ? (
+                  <span>
+                    <EditOutlined />
+                    &nbsp;
+                    EDIT 
+                  </span>
+                )
+                : (
+                  <span>
+                    <PlusOutlined /> 
+                    &nbsp;
+                    ADD
+                  </span>
+                )
+              }
             </Button>
           </Space>
         </Form.Item>

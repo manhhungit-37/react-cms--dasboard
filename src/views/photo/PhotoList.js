@@ -14,6 +14,7 @@ import * as photoApi from 'apis/photo.api';
 
 //hooks
 import useQueryString from 'hooks/useQueryString';
+import useIsMounted from 'hooks/useIsMounted';
 
 //actions
 import { setToast } from 'actions/app.action';
@@ -28,6 +29,7 @@ const mapDispatchToProps = {
 
 function PhotoList({ setToast }) {
   const queryString = useQueryString();
+  const isMounted = useIsMounted();
   const page = Number(queryString.get('page')) || 1;
   const limit = Number(queryString.get('limit')) || 10;
   const history = useHistory();
@@ -43,7 +45,7 @@ const columns = [
     title: 'Images',
     key: 'image',
     dataIndex: 'image',
-    render: text => <img src={text} alt={text} style={{width: 100}} />
+    render: text => <img src={text} alt={text} className="w-100px" />
   },
   {
     title: 'Title',
@@ -100,20 +102,23 @@ const columns = [
       const res = await photoApi.fetchPhotos();
       const { data, total } = res.data;
       data.map(item => item.key = item._id);
-      setPhotos(prevState => ({
-        ...prevState,
-        data,
-        total
-      }))
+      if (isMounted) {
+        setPhotos(prevState => ({
+          ...prevState,
+          data,
+          total
+        }))
+      }
     } catch (error) {
       setToast({ status: 404, message: 'Can not get photos' });
     }
   }
 
   function onChangePage(pageNumber) {
+    console.log(pageNumber);
     const { current, pageSize } = pageNumber;
     fetchPhotos(current, pageSize);
-    history.replace({ pathname: 'user', search: `?page=${current}&limit=${pageSize}` });
+    history.replace({ pathname: '', search: `?page=${current}&limit=${pageSize}` });
   }
 
   return (
@@ -133,7 +138,7 @@ const columns = [
         pagination={{
           total: photos.total,
           defaultCurrent: photos.page,
-          pagdefaultPageSizeeSize: limit,
+          defaultPageSize: limit,
           showSizeChanger: true,
           pageSizeOptions: [10, 20, 50, 100]
         }}

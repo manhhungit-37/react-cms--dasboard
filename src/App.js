@@ -17,10 +17,9 @@ import HeaderComponent from 'components/Header';
 import * as userApi from 'apis/user.api';
 
 // views
-const PhotoList = React.lazy(() => import('views/photoList'));
-const PhotoDetail = React.lazy(() => import('views/photoList/PhotoDetail'));
-const EditPhoto = React.lazy(() => import('views/photoList/EditPhoto'));
-const AddPhoto = React.lazy(() => import('views/photoList/AddPhoto'));
+const Photo = React.lazy(() => import('views/photo'));
+const PhotoDetail = React.lazy(() => import('views/photo/PhotoDetail'));
+const PhotoAddEdit = React.lazy(() => import('views/photo/PhotoAddEdit'));
 const Report = React.lazy(() => import('views/report'));
 const Kanban = React.lazy(() => import('views/kanban'));
 const Member = React.lazy(() => import('views/member'));
@@ -86,9 +85,9 @@ function App({ user, setUser }) {
             
           {user && (
               <Switch>  
-                <Route path="/photo/list" component={PhotoList} />
-                <Route path="/photo/add/" component={AddPhoto} />
-                <Route path="/photo/edit/:id" component={EditPhoto} />
+                <Route path="/photo/list" component={Photo} />
+                <Route path="/photo/add/" component={PhotoAddEdit} />
+                <Route path="/photo/edit/:id" component={PhotoAddEdit} />
                 <Route path="/photo/:id" component={PhotoDetail} />
                 <Route path="/kanban" component={Kanban} />
                 <Route exact path="/member/add" component={MemberAddEdit} />

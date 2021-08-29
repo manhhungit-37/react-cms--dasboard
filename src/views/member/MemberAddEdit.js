@@ -11,16 +11,20 @@ import { setToast } from 'actions/app.action';
 //views
 import FormMember from './components/FormMember';
 
+//hooks
+import useIsMounted from 'hooks/useIsMounted';
+
 const mapDispatchToProps = {
   setToast
 }
 
 function MemberAddEdit({ setToast }) {
-  const history = useHistory();
-  const params = useParams();
   const [member, setMember] = useState(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [forceRender, setForceRender] = useState(Date.now());
+  const history = useHistory();
+  const params = useParams();
+  const isMounted = useIsMounted();
+  // const [forceRender, setForceRender] = useState(Date.now());
 
   useEffect(() => {
     if(!params.id) return;
@@ -29,7 +33,9 @@ function MemberAddEdit({ setToast }) {
       try {
         const res = await memberApi.getMember(params.id);
         const { data } = res.data;
-        setMember(data)
+        if (isMounted) {
+          setMember(data)
+        }
       } catch (error) {
         console.log(error);
       }
@@ -37,17 +43,15 @@ function MemberAddEdit({ setToast }) {
     getMember();
   }, [params.id])
 
-  useEffect(() => {
-    if(!member) return;
-    setForceRender(Date.now())
-  }, [member])
-
+  // useEffect(() => {
+  //   if(!member) return;
+  //   setForceRender(Date.now())
+  // }, [member])
 
   async function onFinish(account) {
     setConfirmLoading(true);
     let res = null;
     account.dateJoin = account.dateJoin._i;
-    account.avatar = 'https://cdn.fakercloud.com/avatars/jodytaggart_128.jpg';
     try {
       if(!member) {
         res =  await memberApi.addMember(account);
@@ -63,13 +67,21 @@ function MemberAddEdit({ setToast }) {
   }
 
   return (
-    <FormMember 
-      key={forceRender}
-      type={member ? 'edit' : 'add'} 
-      member={member} 
-      onFinish={onFinish} 
-      loadingButton={confirmLoading} 
-    />
+    <>
+      {member && (
+        <FormMember 
+          member={member} 
+          onFinish={onFinish} 
+          loadingButton={confirmLoading} 
+        />
+      )}
+      {Object.keys(params).length === 0 && (
+        <FormMember 
+          onFinish={onFinish} 
+          loadingButton={confirmLoading} 
+        />
+      )}
+    </>
   )
 }
 

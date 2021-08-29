@@ -16,6 +16,34 @@ code {
     monospace;
 }
 
+.flex {
+  display: flex;
+}
+
+.red-color {
+  color: #ff0000;
+}
+
+.text-color {
+  color: #ffffff;
+}
+
+.w-100px {
+  width: 100px;
+}
+
+.w-60 {
+  width: 64%;
+}
+
+.w-35 {
+  width: 35%;
+}
+
+.mg-bt-10 {
+  margin-bottom: 10px;
+}
+
 .button-bold {
   font-weight: 700;
   text-transform: uppercase;
@@ -43,6 +71,16 @@ code {
 
 .primary-color {
   color: #40a9ff;
+}
+
+.button-none {
+  border: none;
+  text-transform: uppercase;
+  background-color: #fff;
+  color: #3f51b5;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 10px;
 }
 
 .trigger {
@@ -259,6 +297,113 @@ code {
   max-width: 33.33333%;
   color: rgba(0, 0, 0, 0.54);
   font-weight: 700;
+}
+
+.circle-img {
+  max-width: 100px;
+  border-radius: 50%;
+}
+
+.w-part-box {
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  border-top: 0;
+  border-radius: 4px;
+}
+
+.report-photos {
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 4px;
+  margin-bottom: 40px;
+  height: 350px;
+}
+
+.photo-table {
+  width: 40%;
+  margin-left: 30px;
+}
+
+.chart {
+  width: 40%;
+  height: 95% !important;
+}
+
+.kanban-container {
+  padding: 28px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.severity-shared {
+  padding: 4px 12px ;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.severity_low {
+  background-color: #ff9800;
+}
+
+.severity_medium {
+  background-color: #2196f3;
+}
+
+.severity_high {
+  background-color: #f44336;
+}
+
+.status-new {
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.status-inprocess {
+  color: #ff9800;
+}
+
+.status-completed {
+  color: #4caf50;
+}
+
+.kanban-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.kanban-item {
+  width: calc(33.33333% - 9px);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%), 0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
+}
+
+.kanban-heading {
+  padding: 7px 16px;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+}
+
+.kanban-heading-new {
+  background-color: #ff9800;
+}
+
+.kanban-heading-inprocess {
+  background-color: #3f51b5;
+}
+
+.kanban-heading-completed {
+  background-color: #4caf50;
+}
+
+.todo-item {
+  box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%), 0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
+  width: 95%;
+  margin: 10px auto;
+  border-radius: 4px;
+  padding: 10px
 }
 
 @media only screen and (max-width: 576px) {

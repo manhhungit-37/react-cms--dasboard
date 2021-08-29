@@ -9,9 +9,9 @@ export function getPhoto(id) {
 }
 
 export function addPhoto(data) {
-  return httpRequest.post('/api/photo', data);
+  return httpRequest.post('/api/photo', data, { showToast: true });
 }
 
 export function updatePhoto(id, data) {
-  return httpRequest.put(`/api/photo/${id}`, data);
+  return httpRequest.put(`/api/photo/${id}`, data, { showToast: true });
 }
