@@ -12,20 +12,17 @@ import { Pie } from '@ant-design/charts';
 import { Table } from 'antd';
 
 //hooks
-import useIsMounted from 'hooks/useIsMounted';
+import useSafeState from 'hooks/useSafeState';
 
 const mapDispatchToProps = {
   setToast
 }
 
 function PhotoReport({ setToast }) {
-  const [photos, setPhotos] = useState(null);
+  const [photos, setPhotos] = useSafeState(null);
   const [countObj, setCountObj] = useState(null);
-  const isMounted = useIsMounted();
 
-  console.log(photos);
-
-  var data = [
+  const data = [
     {
       type: 'sports',
       value: countObj?.sports,
@@ -40,7 +37,7 @@ function PhotoReport({ setToast }) {
     }
   ];
 
-  var config = {
+  const config = {
     appendPadding: 0,
     data: data,
     angleField: 'value',
@@ -50,7 +47,7 @@ function PhotoReport({ setToast }) {
       type: 'inner',
       offset: '-30%',
       content: function content(_ref) {
-        var percent = _ref.percent;
+        const percent = _ref.percent;
         return ''.concat((percent * 100).toFixed(1), '%');
       },
       style: {
@@ -89,10 +86,8 @@ function PhotoReport({ setToast }) {
           total: obj[key],
           key
         }))
-        if (isMounted) {
-          setCountObj(obj);
-          setPhotos(result);
-        }
+        setCountObj(obj);
+        setPhotos(result);
       } catch (error) {
         setToast({ status: 400, message: "Server Error" });
       }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import {  useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // ant core
@@ -12,27 +12,11 @@ import { setUser } from 'actions/user.action';
 import Navbar from 'components/Navbar';
 import HeaderComponent from 'components/Header';
 
+// routes
+import Routes from 'routes/Routes';
 
 // api
 import * as userApi from 'apis/user.api';
-
-// views
-const Photo = React.lazy(() => import('views/photo'));
-const PhotoDetail = React.lazy(() => import('views/photo/PhotoDetail'));
-const PhotoAddEdit = React.lazy(() => import('views/photo/PhotoAddEdit'));
-const Report = React.lazy(() => import('views/report'));
-const Kanban = React.lazy(() => import('views/kanban'));
-const Member = React.lazy(() => import('views/member'));
-const MemberAddEdit = React.lazy(() => import('views/member/MemberAddEdit'));
-const User = React.lazy(() => import('views/user'));
-
-
-
-const mapStateToProps = state => {
-  return {
-    user: state.user.user
-  }
-}
 
 const mapDispatchToProps = {
   setUser,
@@ -40,7 +24,7 @@ const mapDispatchToProps = {
 
 const { Content } = Layout;
 
-function App({ user, setUser }) {
+function App({ setUser }) {
   const history = useHistory();
   const [collapsed, setCollapsed] = useState(true);
 
@@ -82,24 +66,9 @@ function App({ user, setUser }) {
               minHeight: 280,
             }}
           >
+
+            <Routes />
             
-          {user && (
-              <Switch>  
-                <Route path="/photo/list" component={Photo} />
-                <Route path="/photo/add/" component={PhotoAddEdit} />
-                <Route path="/photo/edit/:id" component={PhotoAddEdit} />
-                <Route path="/photo/:id" component={PhotoDetail} />
-                <Route path="/kanban" component={Kanban} />
-                <Route exact path="/member/add" component={MemberAddEdit} />
-                <Route path="/member/:id" component={MemberAddEdit} />
-                <Route path="/member" component={Member} />
-                <Route path="/user" component={User} />
-                <Route path="/report" component={Report} />
-                <Route path="/">
-                  <Redirect to="/report" />
-                </Route>
-              </Switch>
-            )}
           </Content>
         </Layout>
       </Layout>
@@ -107,4 +76,4 @@ function App({ user, setUser }) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

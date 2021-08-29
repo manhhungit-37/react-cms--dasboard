@@ -8,3 +8,9 @@ export const ACTION_NAME = {
   'UPDATE_USER': 'UPDATE_USER',
   'DELETE_USER': 'DELETE_USER'
 }
+
+export const ROLES = {
+  ADMIN: 'admin',
+  OPERATOR: 'operator',
+  GUEST: 'guest'
+}

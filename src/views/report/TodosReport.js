@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 //api
@@ -9,40 +9,39 @@ import { setToast } from 'actions/app.action';
 import { Table } from 'antd';
 
 //hooks
-import useIsMounted from 'hooks/useIsMounted';
+import useSafeState from 'hooks/useSafeState';
 
 const mapDispatchToProps = {
   setToast
 }
 
-function TodosReport({ setToast }) {
-  const [todos, setTodos] = useState(null);
-  const isMounted = useIsMounted();
+const columns = [
+  {
+    title: "Title",
+    key: "title",
+    dataIndex: "title"
+  },
+  {
+    title: "Author",
+    key: "author",
+    dataIndex: 'author'
+  },
+  {
+    title: "Severity",
+    key: "severity",
+    dataIndex: 'severity',
+    render: text => <span className={`severity_${text} capitalize severity-shared`}>{text}</span>
+  },
+  {
+    title: "Status",
+    key: "status",
+    dataIndex: 'status',
+    render: text => <span className={`status_${text} capitalize`}>{text}</span>
+  }
+]
 
-  const columns = [
-    {
-      title: "Title",
-      key: "title",
-      dataIndex: "title"
-    },
-    {
-      title: "Author",
-      key: "author",
-      dataIndex: 'author'
-    },
-    {
-      title: "Severity",
-      key: "severity",
-      dataIndex: 'severity',
-      render: text => <span className={`severity_${text} capitalize severity-shared`}>{text}</span>
-    },
-    {
-      title: "Status",
-      key: "status",
-      dataIndex: 'status',
-      render: text => <span className={`status_${text} capitalize`}>{text}</span>
-    }
-  ]
+function TodosReport({ setToast }) {
+  const [todos, setTodos] = useSafeState(null);
 
   useEffect(() => {
     async function fetchTodos() {
@@ -50,9 +49,7 @@ function TodosReport({ setToast }) {
         const res = await todosApi.fetchTodos();
         const { data } = res.data;
         data?.map(item => item.key = item._id);
-        if (isMounted) {
-          setTodos(data);
-        }
+        setTodos(data);
       } catch (error) {
         setToast({ status: 400, message: 'Can not get members' });
       }
@@ -64,7 +61,7 @@ function TodosReport({ setToast }) {
 
   return (
     <div className="w-part-box w-60">
-      {todos && <Table columns={columns} dataSource={todos} pagination={false} title={() => <h1 className="component-heading">Members</h1>} />}
+      {todos && <Table columns={columns} dataSource={todos} pagination={false} title={() => <h1 className="component-heading">Todos</h1>} />}
     </div>
   )
 }
